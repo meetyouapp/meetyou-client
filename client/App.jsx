@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import TabScreen from "./screens/TabScreen";
+import Profile from "./screens/Profile";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{ headerShadowVisible: false, headerShown: false }}
       >
+        <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="TabScreen" component={TabScreen} />
