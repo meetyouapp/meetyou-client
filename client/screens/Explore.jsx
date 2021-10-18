@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Image, ImageBackground, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import CardsSwipe from 'react-native-cards-swipe';
 import { Feather as Icon } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { borderRadius } from 'styled-system';
+import { borderRadius, paddingBottom, paddingTop } from 'styled-system';
+import * as Location from 'expo-location';
 
 const cardsData = [
   {
@@ -158,8 +160,32 @@ const cardsData = [
   }
 ];
 
-export default function Explore() {
+export default function Explore({navigation}) {
   const swiper = useRef(null);
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location);
+    })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
 
   return (
     <View style={styles.container}>
@@ -190,8 +216,9 @@ export default function Explore() {
               <View style={styles.cardText}>
                 <Text style={styles.cardName}>{card.username}</Text>
                 <Text style={styles.cardAge}>{card.age}</Text>
+
               </View>
-              {/* </LinearGradient> */}
+
             </ImageBackground>
           </View>
         )}
@@ -212,6 +239,7 @@ export default function Explore() {
         )}
       />
       <View style={styles.controlRow}>
+        {/* LIKE */}
         <TouchableOpacity
           onPress={() => {
             if (swiper.current) swiper.current.swipeLeft();
@@ -221,6 +249,17 @@ export default function Explore() {
         >
           <Icon name="x" size={32} color="#ec5288" />
         </TouchableOpacity>
+
+        {/* DETAIL */}
+        <TouchableOpacity
+          onPress={() => {
+          navigation.push('Detail')
+        }}
+        >
+          <Ionicons name="information-circle" size={50} color="black" />
+        </TouchableOpacity>
+
+        {/* DISLIKE */}
         <TouchableOpacity
           onPress={() => {
             if (swiper.current) swiper.current.swipeRight();
@@ -244,7 +283,7 @@ const styles = StyleSheet.create({
   cardsSwipeContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    paddingTop: 40,
+    paddingTop: 50,
     zIndex: 1,
     elevation: 1,
   },
@@ -298,7 +337,7 @@ const styles = StyleSheet.create({
   controlRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     width: '100%',
     paddingHorizontal: 20,
     marginTop: 22,
