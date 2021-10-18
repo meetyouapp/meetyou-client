@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -25,10 +25,29 @@ import {
   List,
   Button,
 } from "native-base";
+import { Link } from "@react-navigation/native";
+import { auth } from "../firebase";
 
 const bgHeight = Dimensions.get("window").height / 2.5;
 
 export default function Login({ navigation }) {
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // console.log(authUser);
+        navigation.replace("TabScreen");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const loginHandler = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((authUser) => console.log(authUser))
+      .catch((err) => console.log(err));
+  };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground
@@ -55,7 +74,7 @@ export default function Login({ navigation }) {
             Don't have an account?
             <Text style={{ color: "red", fontStyle: "italic" }}>
               {" "}
-              Register now
+              <Link to={{ screen: "Register" }}>Register now</Link>
             </Text>
           </Text>
           <View style={{ marginTop: 50 }}>
@@ -133,7 +152,8 @@ export default function Login({ navigation }) {
               <Button
                 style={styles.loginButton}
                 variant="subtle"
-                colorScheme="secondary" // onPress={() => console.log('hello world')}
+                colorScheme="secondary" //
+                onPress={loginHandler}
               >
                 <Text style={{ color: "#fff" }}>Login</Text>
               </Button>
