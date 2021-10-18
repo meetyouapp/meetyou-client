@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import TabScreen from "./screens/TabScreen";
+import Profile from "./screens/Profile";
 
 import { componentsColor } from "./constants/Color";
 import store from "./stores";
@@ -18,7 +19,6 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-
     <Provider store={store}>
       <NavigationContainer>
         <StatusBar style="light" />
@@ -36,6 +36,7 @@ export default function App() {
             headerTintColor: "white",
           }}
         >
+          {/* <Stack.Screen name="Profile"  options={{ headerShown: false }} component={Profile} /> */}
           <Stack.Screen
             name="Login"
             options={{ headerShown: false }}
@@ -45,7 +46,7 @@ export default function App() {
           <Stack.Screen name="TabScreen" component={TabScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-
+    </Provider>
   );
 }
 
