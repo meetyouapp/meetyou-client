@@ -47,7 +47,7 @@ export default function Detail({route}) {
             </View>
 
             <View style={{ padding: 10}}>
-              <View style={{ flex: 1, flexDirection: 'row'}}>
+              <View style={{ flex: 1, flexDirection: 'row', }}>
                 <Text style={styles.textName}>Chris Hemsworth, </Text>
                 <Text style={styles.textName}>38</Text>
               </View>

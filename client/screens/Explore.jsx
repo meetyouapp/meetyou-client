@@ -215,8 +215,7 @@ export default function Explore({navigation}) {
               />
               <View style={styles.cardText}>
                 <Text style={styles.cardName}>{card.username}</Text>
-                <Text style={styles.cardAge}>{card.age}</Text>
-
+                <Text style={styles.cardAge}>{card.age}</Text>                
               </View>
 
             </ImageBackground>
@@ -237,20 +236,25 @@ export default function Explore({navigation}) {
             <Text style={styles.nopeLabel}>NOPE</Text>
           </View>
         )}
+        onSwipedLeft={(i) => {
+          console.log(`saya benci ${cardsData[i].username}`);
+        }}
+        onSwipedRight={(i) => {
+          console.log(`saya suka ${cardsData[i].username}`);
+        }}
       />
       <View style={styles.controlRow}>
-        {/* LIKE */}
+        {/* DISLIKE */}
         <TouchableOpacity
           onPress={() => {
             if (swiper.current) swiper.current.swipeLeft();
-            console.log("NOPEEE");
           }}
           style={[styles.button, styles.leftBtn]}
         >
           <Icon name="x" size={32} color="#ec5288" />
         </TouchableOpacity>
 
-        {/* DETAIL */}
+        {/* DETAIL */}  
         <TouchableOpacity
           onPress={() => {
           navigation.push('Detail')
@@ -259,11 +263,10 @@ export default function Explore({navigation}) {
           <Ionicons name="information-circle" size={50} color="black" />
         </TouchableOpacity>
 
-        {/* DISLIKE */}
+        {/* LIKE */}
         <TouchableOpacity
           onPress={() => {
             if (swiper.current) swiper.current.swipeRight();
-            console.log("YESSSS");
           }}
           style={[styles.button, styles.rightBtn]}
         >
@@ -316,6 +319,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   cardText: {
+    flex: 1, 
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
     padding: 20
   },
   cardName: {
