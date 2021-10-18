@@ -1,5 +1,9 @@
 export const SET_INTERESTS = "interests/setInterest";
-export const SET_REGISTER_USERS = "users/setUsers";
+export const SET_REGISTER_USERS = "users/registerUsers";
+export const SET_LOGIN_USERS = "users/loginUsers";
+export const SET_TOKEN_USERS = "users/setTokenUsers";
 export const SET_USERS = "users/setUsers";
 export const SET_LOADING_USERS = "users/setLoadingUsers";
 export const SET_ERROR_USERS = "users/setErrorUsers";
+export const SET_ERROR_REGISTER = "users/setErrorRegister";
+export const SET_ERROR_LOGIN = "users/setErrorLogin";

@@ -14,7 +14,6 @@ import Profile from "./screens/Profile";
 import { componentsColor } from "./constants/Color";
 import store from "./stores";
 
-
 export default function App() {
   const Stack = createNativeStackNavigator();
 
@@ -23,6 +22,7 @@ export default function App() {
       <NavigationContainer>
         <StatusBar style="light" />
         <Stack.Navigator
+          initialRouteName="TabScreen"
           screenOptions={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
@@ -43,7 +43,11 @@ export default function App() {
             component={Login}
           />
           <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="TabScreen" component={TabScreen} />
+          <Stack.Screen
+            name="TabScreen"
+            component={TabScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,8 +1,12 @@
 import { instance } from "../../apis/api";
 import {
+  SET_ERROR_LOGIN,
+  SET_ERROR_REGISTER,
   SET_ERROR_USERS,
   SET_LOADING_USERS,
+  SET_LOGIN_USERS,
   SET_REGISTER_USERS,
+  SET_TOKEN_USERS,
   SET_USERS,
 } from "../actionType";
 
@@ -27,6 +31,34 @@ export function setErrorUsers(error) {
   };
 }
 
+export function setErrorRegister(error) {
+  return {
+    type: SET_ERROR_REGISTER,
+    payload: error,
+  };
+}
+
+export function setErrorLogin(error) {
+  return {
+    type: SET_ERROR_LOGIN,
+    payload: error,
+  };
+}
+
+export function loginUsers(isLogin) {
+  return {
+    type: SET_LOGIN_USERS,
+    payload: isLogin,
+  };
+}
+
+export function setTokenUsers(token) {
+  return {
+    type: SET_TOKEN_USERS,
+    payload: token,
+  };
+}
+
 export function registerUsers(user) {
   return {
     type: SET_REGISTER_USERS,
@@ -44,7 +76,7 @@ export function setUsersAsync() {
         dispatch(setUsers(data));
       })
       .catch((err) => {
-        console.log(err.response, "errrorrr");
+        console.log(err.response);
         dispatch(setErrorUsers(err));
       })
       .finally(() => dispatch(setLoadingUsers(false)));
@@ -59,10 +91,31 @@ export function registerUsersAsync(payload) {
       .then((res) => {
         const data = res.data;
         dispatch(registerUsers(data));
+        console.log("register brhasil");
       })
       .catch((err) => {
-        console.log(err.response.data.message);
-        dispatch(setErrorUsers(err.response.data.message));
+        console.log(err, "di registerrrr");
+        dispatch(setErrorRegister(err.response.data.message));
+      })
+      .finally(() => dispatch(setLoadingUsers(false)));
+  };
+}
+
+export function loginUsersAsync(payload) {
+  console.log(payload);
+  return function (dispatch) {
+    dispatch(setLoadingUsers(true));
+    instance
+      .post(`/login`, payload)
+      .then((res) => {
+        const token = res.data.access_token;
+        dispatch(loginUsers(true));
+        dispatch(setTokenUsers(token));
+        console.log("berhasil login");
+      })
+      .catch((err) => {
+        console.log(err, "disiniii");
+        dispatch(setErrorLogin(err));
       })
       .finally(() => dispatch(setLoadingUsers(false)));
   };
