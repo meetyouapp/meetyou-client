@@ -10,6 +10,7 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import TabScreen from "./screens/TabScreen";
 import Profile from "./screens/Profile";
+import OnBoard from "./screens/OnBoard";
 
 import { componentsColor } from "./constants/Color";
 import store from "./stores";
@@ -36,6 +37,7 @@ export default function App() {
             headerTintColor: "white",
           }}
         >
+          {/* <Stack.Screen name="OnBoard"  options={{ headerShown: false }} component={OnBoard} /> */}
           {/* <Stack.Screen name="Profile"  options={{ headerShown: false }} component={Profile} /> */}
           <Stack.Screen
             name="Login"
