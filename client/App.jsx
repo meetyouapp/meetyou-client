@@ -9,13 +9,16 @@ import { Provider } from "react-redux";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import TabScreen from "./screens/TabScreen";
+
 import { componentsColor } from "./constants/Color";
 import store from "./stores";
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
+
     <Provider store={store}>
       <NavigationContainer>
         <StatusBar style="light" />
@@ -42,7 +45,7 @@ export default function App() {
           <Stack.Screen name="TabScreen" component={TabScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+
   );
 }
 
