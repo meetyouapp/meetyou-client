@@ -49,15 +49,18 @@ const data = {
   ]
 }
 
-import React from 'react';
-import { Text, View, StyleSheet, ScrollView, Image, FlatList, CardItem, TouchableOpacity, Dimensions  } from "react-native";
-import {
-  NativeBaseProvider,
-  Button,
-} from "native-base";
+import React, {useState} from 'react';
+import { Text, TextInput, View, StyleSheet, ScrollView, Image, FlatList, CardItem, TouchableOpacity, Modal, Pressable  } from "react-native";
+import {Picker} from '@react-native-picker/picker';
+
 import { componentsColor } from "../constants/Color";
 
 export default function Profile({navigation}) {
+
+  const [popUpAddImage, setpopUpAddImage] = useState(false);
+  const [popUpEditProfile, setpopUpEditProfile] = useState(false);
+  const [text, setText] = useState('');
+  
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -79,7 +82,9 @@ export default function Profile({navigation}) {
                   )
                 })
               }
-              <Image style={styles.addUserImage} source={{uri: "https://ik.imagekit.io/xvfgr2ixls8/Meetyou__9___1__ZyFDB8ekN.png?updatedAt=1634497950246"}}></Image>
+              <TouchableOpacity onPress={() => {setpopUpAddImage(true)}}>
+                <Image style={styles.addUserImage} source={{uri: "https://ik.imagekit.io/xvfgr2ixls8/Meetyou__9___1__ZyFDB8ekN.png?updatedAt=1634497950246"}}></Image>
+              </TouchableOpacity>
             </ScrollView>
             <View style={{textAlign: 'left', bottom: '14%'}}>
             {
@@ -90,18 +95,99 @@ export default function Profile({navigation}) {
               })
             }
 
+            <View>
+              <Modal
+              style={styles.centeredView}
+                animationType="slide"
+                transparent={true}
+                visible={popUpAddImage}
+                onRequestClose={() => {
+                  setpopUpAddImage(false);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Add New Photo</Text>
+                    <View style={{padding: 10}}>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="Add Image Url"
+                        onChangeText={text => setText(text)}
+                        defaultValue={text}
+                      />
+                      <Text style={{padding: 10, fontSize: 24, textAlign: 'center'}}>
+                        {text}
+                      </Text>
+                    </View>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setpopUpAddImage(false)}>
+                      <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
+
+                  </View>
+                </View>
+              </Modal>
             </View>
+
+            <View>
+              <Modal
+              style={styles.centeredView2}
+                animationType="slide"
+                transparent={true}
+                visible={popUpEditProfile}
+                onRequestClose={() => {
+                  setpopUpEditProfile(false);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Edit Profile</Text>
+                    <View style={{padding: 10}}>
+                      <Text style={styles.inputTitle}>Username</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="Name"
+                        defaultValue={data.username}
+                      />
+                      <Text style={styles.inputTitle}>About me</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="About"
+                        defaultValue={data.about}
+                      />
+                      <Text style={styles.inputTitle}>Age</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        keyboardType='numeric'
+                        defaultValue={data.age.toString()}
+                      />
+                      <Text style={styles.inputTitle}>Gender</Text>
+                      <Picker
+                      selectedValue={data.gender}
+                        >
+                        <Picker.Item label="male" value="male" />
+                        <Picker.Item label="female" value="female" />
+                      </Picker>
+                    </View>
+                    
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setpopUpEditProfile(false)}>
+                      <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
+
+                  </View>
+                </View>
+              </Modal>
+            </View>
+
+          </View>
         </View>
       </View>
-      <NativeBaseProvider>
-        <Button
-          style={styles.loginButton}
-          variant="subtle"
-          colorScheme="secondary" // onPress={() => console.log('hello world')}
-        >
-          <Text style={{ color: "#fff" }}>Edit Profile</Text>
-        </Button>
-      </NativeBaseProvider>
+      <Pressable
+        style={[styles.buttonForEditProfile, styles.buttonClose]}
+        onPress={() => setpopUpEditProfile(true)}>
+        <Text style={styles.textStyle}>Edit Profile</Text>
+      </Pressable>
     </ScrollView>
   )
 }
@@ -113,6 +199,63 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // styling for pop up
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: '8.5%',
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'white',
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
+  },
+  centeredView2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: '0%',
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'white',
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 15,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: componentsColor,
+  },
+  textStyle: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  inputUrl: {
+    borderColor: componentsColor,
+    borderWidth: 1.5,
+    borderRadius: 30,
+    height: 50,
+    width: 300,
+    textAlign: 'center'
+  },
+  // styling for page
   bgImage: {
     flex: 1,
     position: 'absolute',
@@ -184,12 +327,19 @@ const styles = StyleSheet.create({
     borderColor: componentsColor,
     borderWidth: 2,
   },
-  loginButton: {
-    alignSelf: "center",
-    backgroundColor: componentsColor,
-    borderRadius: 100,
-    width: Dimensions.get("window").width / 2,
-    justifyContent: "center",
-    bottom: '8%'
+  buttonForEditProfile: {
+    borderRadius: 20,
+    padding: 15,
+    elevation: 2,
+    width: 200,
+    marginBottom: 30,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
+  inputTitle: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 6,
+    fontWeight: 'bold'
+  }
 });
