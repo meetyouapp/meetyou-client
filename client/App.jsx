@@ -19,8 +19,8 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{ headerShadowVisible: false, headerShown: false }}
       >
-        <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="TabScreen" component={TabScreen} />
       </Stack.Navigator>

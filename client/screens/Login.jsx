@@ -131,6 +131,7 @@ export default function Login({ navigation }) {
           >
             <NativeBaseProvider>
               <Button
+                onPress={() => navigation.push('TabScreen')}
                 style={styles.loginButton}
                 variant="subtle"
                 colorScheme="secondary" // onPress={() => console.log('hello world')}
