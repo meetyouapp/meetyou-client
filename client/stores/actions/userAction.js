@@ -72,25 +72,24 @@ export function registerUsers(user) {
 export function setUsersAsync() {
   return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    let token = await AsyncStorage.getItem('access_token')
-    console.log("Token lintrik", token);
-    instance({
-      method: 'get',
-      url: '/user',
-      headers: {
-        "access_token": await AsyncStorage.getItem('access_token')
-      }
-    })
-      .then((res) => {
-        const data = res.data;
-        console.log("DATA USER BROK", data);
-        dispatch(setUsers(data));
+    
+    try {
+      let token = await AsyncStorage.getItem('access_token')
+      console.log("Token lintrik", token);
+      const response = await instance({
+        method: 'get',
+        url: '/user',
+        headers: {
+          "access_token": await AsyncStorage.getItem('access_token')
+        }
       })
-      .catch((err) => {
-        console.log(err.response);
-        dispatch(setErrorUsers(err));
-      })
-      .finally(() => dispatch(setLoadingUsers(false)));
+      const data = response.data;
+      console.log("DATA USER BROK", data);
+      await dispatch(setUsers(data));
+    } catch (error) {
+      console.log(error);
+      dispatch(setErrorUsers(error));
+    }
   };
 }
 
@@ -101,8 +100,7 @@ export function registerUsersAsync(payload) {
       .post(`/register`, payload)
       .then((res) => {
         const data = res.data;
-        dispatch(setUsers(data));//cek access token
-
+        console.log(data);
         dispatch(registerUsers(data));
         console.log("register brhasil");
       })
@@ -116,24 +114,16 @@ export function registerUsersAsync(payload) {
 
 export function loginUsersAsync(payload) {
   console.log(payload);
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    return instance
-      .post(`/login`, payload)
-      .then((res) => {
-        // console.log(res, "loginn");
-        const token = res.data.access_token;
-        console.log("INI APA", token);
-        dispatch(loginUsers(true));
-        dispatch(setTokenUsers(token));
-        console.log("Token Login", token);
-        console.log("berhasil login");
-        return token
-      })
-      .catch((err) => {
-        console.log(err, "disiniii");
-        dispatch(setErrorLogin(err));
-      })
-      .finally(() => dispatch(setLoadingUsers(false)));
+    try {
+      const response = await instance.post(`/login`, payload);
+      const data = response.data;
+      dispatch(setTokenUsers(data.access_token));
+      dispatch(loginUsers(true));
+      await AsyncStorage.setItem("access_token", data.access_token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 }

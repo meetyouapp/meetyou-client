@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { componentsColor } from "../constants/Color";
 
 import Profile from "./Profile";
@@ -19,15 +20,20 @@ import Explore from "./Explore";
 import Chat from "./Chat";
 import { Avatar } from "react-native-elements";
 import { auth, db } from "../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { loginUsers, setTokenUsers } from "../stores/actions/userAction";
 
 export default function TabScreen({ navigation }) {
+  const dispatch = useDispatch();
   const Tab = createBottomTabNavigator();
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     title: "Meet You",
-  //   });
-  // }, []);
+  const signOut = async () => {
+    await AsyncStorage.removeItem("access_token");
+    dispatch(loginUsers(false));
+    dispatch(setTokenUsers(""));
+    navigation.navigate("Login");
+  };
 
   return (
     <Tab.Navigator
@@ -91,6 +97,19 @@ export default function TabScreen({ navigation }) {
                         auth?.currentUser?.photoURL ||
                         "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
                     }}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          },
+          headerRight: () => {
+            return (
+              <View style={{ marginRight: 20 }}>
+                <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
+                  <MaterialIcons
+                    name="logout"
+                    size={24}
+                    color={componentsColor}
                   />
                 </TouchableOpacity>
               </View>

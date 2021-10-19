@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -10,27 +10,37 @@ import {
   CardItem,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector, useDispatch } from "react-redux";
 import ListChat from "../components/ListChat";
+import { setChatsAsync } from "../stores/actions/chatAction";
+import { componentsColor } from "../constants/Color";
 
 export default function Chat({ navigation }) {
-  useEffect(() => {
-    getData();
-  }, []);
+  const { chats } = useSelector((state) => state.chatsState);
+  const asAuthor = chats?.chatListAuthor?.map((el) => {
+    return el.target;
+  });
+  const asTarget = chats?.chatListTarget?.map((el) => {
+    return el.author;
+  });
 
-  const getData = () => {
-    try {
-      AsyncStorage.getItem("access_token").then((value) => console.log(value));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const chatsData = [...(asAuthor || []), ...(asTarget || [])];
+  console.log(chatsData, "inii chat asli");
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setChatsAsync());
+  }, []);
 
   return (
     <View>
       <ScrollView>
-        <ListChat />
+        {chatsData?.map(({ id, photo, username }) => {
+          // console.log(username);
+          return (
+            <ListChat key={id} id={id} photo={photo} chatName={username} />
+          );
+        })}
       </ScrollView>
     </View>
   );

@@ -169,7 +169,7 @@ export default function Explore({navigation}) {
 
   const dispatch = useDispatch()
 
-  const cardsData = useSelector(state => state.usersState.users)
+  const cardsData = useSelector(state => state.usersState)
   // console.log("data USer", cardsData);
 
   useEffect(() => {
