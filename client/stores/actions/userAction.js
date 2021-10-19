@@ -54,7 +54,7 @@ export function loginUsers(isLogin) {
 }
 
 export function setTokenUsers(token) {
-  console.log(token, "di set token");
+  // console.log(token, "di set token");
   return {
     type: SET_TOKEN_USERS,
     payload: token,
@@ -92,6 +92,7 @@ export function registerUsersAsync(payload) {
       .post(`/register`, payload)
       .then((res) => {
         const data = res.data;
+        console.log(data);
         dispatch(registerUsers(data));
         console.log("register brhasil");
       })
@@ -112,7 +113,7 @@ export function loginUsersAsync(payload) {
       .then((res) => {
         // console.log(res, "loginn");
         const token = res.data.access_token;
-        console.log(token);
+        // console.log(token);
         dispatch(loginUsers(true));
         dispatch(setTokenUsers(token));
         console.log("berhasil login");

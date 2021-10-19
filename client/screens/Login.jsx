@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLogin, access_token, errorLogin } = useSelector(
+  const { isLogin, errorLogin, access_token } = useSelector(
     (state) => state.usersState
   );
 
@@ -47,29 +47,26 @@ export default function Login({ navigation }) {
     }
   });
 
-  const loginHandler = () => {
+  const loginHandler = async () => {
     const payload = {
       email: email,
       password: password,
     };
-
     dispatch(loginUsersAsync(payload));
     if (!errorLogin && isLogin === true) {
       try {
-        AsyncStorage.setItem("access_token", access_token).then(() =>
-          console.log("ada token")
-        );
+        await AsyncStorage.setItem("access_token", access_token);
+
+        setEmail("");
+        setPassword("");
       } catch (error) {
         console.log(error);
       }
     }
-
-    setEmail("");
-    setPassword("");
   };
 
   console.log(isLogin);
-  console.log(access_token, "tokennn");
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground

@@ -86,7 +86,7 @@ export default function Login({ navigation }) {
     });
   }
 
-  const registerHandler = async () => {
+  const registerHandler = () => {
     const payload = {
       username: username,
       email: email,
@@ -100,20 +100,8 @@ export default function Login({ navigation }) {
       interestId: interestId,
     };
 
-    const payloadLogin = {
-      email: email,
-      password: password,
-    };
     dispatch(registerUsersAsync(payload));
-    if (errorRegister === null) {
-      dispatch(loginUsersAsync(payloadLogin));
-    } else {
-      if (Array.isArray(errorRegister)) {
-        errorRegister.map((el) => alert(el));
-      } else {
-        alert(errorRegister);
-      }
-    }
+    navigation.navigate("Login");
 
     setUsername("");
     setEmail("");
@@ -271,7 +259,6 @@ export default function Login({ navigation }) {
           placeholderTextColor={componentsColor}
           value={gender}
           onChangeText={(text) => setGender(text)}
-          onSubmitEditing={registerHandler}
           style={{
             height: 45,
             borderColor: "#fff",

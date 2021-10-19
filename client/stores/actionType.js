@@ -7,3 +7,5 @@ export const SET_LOADING_USERS = "users/setLoadingUsers";
 export const SET_ERROR_USERS = "users/setErrorUsers";
 export const SET_ERROR_REGISTER = "users/setErrorRegister";
 export const SET_ERROR_LOGIN = "users/setErrorLogin";
+export const SET_CHATS = "chats/setChats";
+export const SET_LOADING_CHATS = "chats/setLoadingChats";
