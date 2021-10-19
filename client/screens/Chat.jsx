@@ -11,10 +11,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { SafeAreaView } from "react-native-safe-area-context";
+import ListChat from "../components/ListChat";
+
 export default function Chat({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text>Chat</Text>
+    <View>
+      <ScrollView>
+        <ListChat />
+      </ScrollView>
     </View>
   );
 }

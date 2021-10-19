@@ -14,21 +14,29 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import { Text, Button } from "react-native-elements";
 import { componentsColor } from "../constants/Color";
 import { useDispatch } from "react-redux";
+import { NativeBaseProvider, Stack } from "native-base";
 import {
   setInterests,
   setInterestsAsync,
 } from "../stores/actions/interestAction";
 import { useSelector } from "react-redux";
-import { registerUsersAsync } from "../stores/actions/userAction";
+import {
+  loginUsersAsync,
+  registerUsersAsync,
+} from "../stores/actions/userAction";
 import { auth } from "../firebase";
+import { ErrorHandle } from "../components/errorHandle";
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const interests = useSelector((state) => state.interestsState.interests);
+  const { access_token } = useSelector((state) => state.usersState);
+  const { errorRegister } = useSelector((state) => state.usersState);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -85,25 +93,40 @@ export default function Login({ navigation }) {
       age: age,
       password: password,
       gender: gender,
-      photo: photo,
+      photo:
+        photo ||
+        "https://www.pikpng.com/pngl/m/16-168770_user-iconset-no-profile-picture-icon-circle-clipart.png",
       about: about,
       interestId: interestId,
     };
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        // console.log(authUser);
-        authUser.user.updateProfile({
-          displayName: username,
-          photoUrl:
-            photo ||
-            "https://www.pikpng.com/pngl/m/16-168770_user-iconset-no-profile-picture-icon-circle-clipart.png",
-        });
-      })
-      .catch((err) => console.log(err.message));
-
+    const payloadLogin = {
+      email: email,
+      password: password,
+    };
     dispatch(registerUsersAsync(payload));
+    if (errorRegister === null) {
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((authUser) => {
+          authUser.user.updateProfile({
+            displayName: username,
+            photoURL:
+              photo ||
+              "https://www.pikpng.com/pngl/m/16-168770_user-iconset-no-profile-picture-icon-circle-clipart.png",
+          });
+          dispatch(loginUsersAsync(payloadLogin));
+          AsyncStorage.setItem("access_token", access_token);
+        })
+        .catch((err) => console.log(err.message, "masuk sini kah"));
+    } else {
+      if (Array.isArray(errorRegister)) {
+        errorRegister.map((el) => alert(el));
+      } else {
+        alert(errorRegister);
+      }
+    }
+
     setUsername("");
     setEmail("");
     setPassword("");
@@ -255,11 +278,12 @@ export default function Login({ navigation }) {
           }}
         />
         <TextInput
-          placeholder="Gender e.g.: female"
+          placeholder="Gender e.g. female"
           type="gender"
           placeholderTextColor={componentsColor}
           value={gender}
           onChangeText={(text) => setGender(text)}
+          onSubmitEditing={registerHandler}
           style={{
             height: 45,
             borderColor: "#fff",

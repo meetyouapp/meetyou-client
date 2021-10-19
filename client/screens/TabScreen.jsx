@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import {
   Text,
   View,
@@ -17,9 +17,17 @@ import { componentsColor } from "../constants/Color";
 import Profile from "./Profile";
 import Explore from "./Explore";
 import Chat from "./Chat";
+import { Avatar } from "react-native-elements";
+import { auth, db } from "../firebase";
 
 export default function TabScreen({ navigation }) {
   const Tab = createBottomTabNavigator();
+
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     title: "Meet You",
+  //   });
+  // }, []);
 
   return (
     <Tab.Navigator
@@ -45,17 +53,50 @@ export default function TabScreen({ navigation }) {
       <Tab.Screen
         name="Explore"
         component={Explore}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+        }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: componentsColor },
+          headerShadowVisible: false,
+          headerTitleStyle: { color: "#fff" },
+          headerTintColor: "#fff",
+        }}
       />
       <Tab.Screen
         name="Chat"
         component={Chat}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+          headerTitleStyle: { color: "#333" },
+          headerTintColor: "#333",
+          headerLeft: () => {
+            return (
+              <View style={{ marginLeft: 20 }}>
+                <TouchableOpacity activeOpacity={0.5}>
+                  <Avatar
+                    rounded
+                    source={{
+                      uri:
+                        auth?.currentUser?.photoURL ||
+                        "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          },
+        }}
       />
     </Tab.Navigator>
   );

@@ -27,27 +27,52 @@ import {
 } from "native-base";
 import { Link } from "@react-navigation/native";
 import { auth } from "../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUsersAsync } from "../stores/actions/userAction";
 
 const bgHeight = Dimensions.get("window").height / 2.5;
 
 export default function Login({ navigation }) {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isLogin, access_token } = useSelector((state) => state.usersState);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
+      if (authUser && isLogin === true) {
         // console.log(authUser);
+        console.log("kapan mulaiiiii");
         navigation.replace("TabScreen");
+        console.log("kapan mulai");
       }
     });
 
     return unsubscribe;
-  }, []);
+  }, [isLogin]);
 
   const loginHandler = () => {
+    const payload = {
+      email: email,
+      password: password,
+    };
+
     auth
       .signInWithEmailAndPassword(email, password)
-      .then((authUser) => console.log(authUser))
-      .catch((err) => console.log(err));
+      .then((authUser) => {
+        // console.log(authUser);
+      })
+      .catch((err) => console.log(err, "disini?"));
+
+    dispatch(loginUsersAsync(payload));
+    AsyncStorage.setItem("access_token", access_token);
+
+    setEmail("");
+    setPassword("");
   };
+
+  console.log(isLogin);
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground
@@ -85,6 +110,8 @@ export default function Login({ navigation }) {
                   variant="underlined"
                   placeholder="Email"
                   type="email"
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
                   InputRightElement={
                     <CheckIcon
                       iconName="check"
@@ -101,6 +128,9 @@ export default function Login({ navigation }) {
                   variant="underlined"
                   placeholder="Password"
                   type="password"
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                  onSubmitEditing={loginHandler}
                   InputRightElement={
                     <Icon
                       as={<Ionicons name="eye-off" />}

@@ -50,6 +50,7 @@ export default function App() {
       <NavigationContainer>
         <StatusBar style="light" />
         <Stack.Navigator
+          initialRouteName="TabScreen"
           screenOptions={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
@@ -72,7 +73,11 @@ export default function App() {
           />
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="TabScreen" component={TabScreen} />
+          <Stack.Screen
+            name="TabScreen"
+            component={TabScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
