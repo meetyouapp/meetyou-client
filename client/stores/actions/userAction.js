@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "../../apis/api";
 import {
   SET_ERROR_LOGIN,
@@ -10,6 +9,7 @@ import {
   SET_TOKEN_USERS,
   SET_USERS,
 } from "../actionType";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export function setUsers(users) {
   return {
@@ -70,19 +70,27 @@ export function registerUsers(user) {
 }
 
 export function setUsersAsync() {
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    instance
-      .post(`/user`)
-      .then((res) => {
-        const data = res.data;
-        dispatch(setUsers(data));
+    
+    try {
+      // let token = await AsyncStorage.getItem('access_token')
+      // console.log("Token lintrik", token);
+      const response = await instance({
+        method: 'GET',
+        url: '/user',
+        headers: {
+          "Content-Type": "application/json",
+          access_token: await AsyncStorage.getItem('access_token')
+        }
       })
-      .catch((err) => {
-        console.log(err.response);
-        dispatch(setErrorUsers(err));
-      })
-      .finally(() => dispatch(setLoadingUsers(false)));
+      const data = response.data;
+      // console.log("DATA USER BROK", data);
+      await dispatch(setUsers(data));
+    } catch (error) {
+      console.log(error);
+      dispatch(setErrorUsers(error));
+    }
   };
 }
 
