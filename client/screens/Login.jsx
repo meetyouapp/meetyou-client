@@ -42,10 +42,12 @@ export default function Login({ navigation }) {
   );
 
   useEffect(() => {
-    if (isLogin === true && AsyncStorage.getItem("access_tokem")) {
+    if (isLogin === true && AsyncStorage.getItem("access_token")) {
       navigation.replace("TabScreen");
+    } else {
+      navigation.navigate("Login");
     }
-  });
+  }, [isLogin]);
 
   const loginHandler = async () => {
     const payload = {
@@ -53,19 +55,9 @@ export default function Login({ navigation }) {
       password: password,
     };
     dispatch(loginUsersAsync(payload));
-    if (!errorLogin && isLogin === true) {
-      try {
-        await AsyncStorage.setItem("access_token", access_token);
-
-        setEmail("");
-        setPassword("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
   };
 
-  console.log(isLogin);
+  console.log(access_token);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
