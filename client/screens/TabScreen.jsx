@@ -75,6 +75,19 @@ export default function TabScreen({ navigation }) {
           headerShadowVisible: false,
           headerTitleStyle: { color: "#fff" },
           headerTintColor: "#fff",
+          headerRight: () => {
+            return (
+              <View style={{ marginRight: 20 }}>
+                <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
+                  <MaterialIcons
+                    name="logout"
+                    size={24}
+                    color={'white'}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          },
         }}
       />
       <Tab.Screen
@@ -95,19 +108,6 @@ export default function TabScreen({ navigation }) {
                     source={{
                       uri: "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
                     }}
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          },
-          headerRight: () => {
-            return (
-              <View style={{ marginRight: 20 }}>
-                <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
-                  <MaterialIcons
-                    name="logout"
-                    size={24}
-                    color={componentsColor}
                   />
                 </TouchableOpacity>
               </View>
