@@ -8,7 +8,7 @@ import { borderRadius, paddingBottom, paddingTop } from 'styled-system';
 import * as Location from 'expo-location';
 
 import { useSelector, useDispatch } from "react-redux";
-import { setUsersAsync } from "../stores/actions/userAction"
+import { setUsersAsync, swipeRight, swipeLeft } from "../stores/actions/userAction"
 
 
 // const cardsData = [
@@ -250,10 +250,18 @@ export default function Explore({navigation}) {
           </View>
         )}
         onSwipedLeft={(i) => {
-          console.log(`saya benci ${cardsData[i].username}`);
+          console.log(`saya tidak suka ${cardsData[i].username}`);
+          const payload ={
+            targetId: cardsData[i].id
+          }
+          dispatch(swipeLeft(payload))
         }}
         onSwipedRight={(i) => {
           console.log(`saya suka ${cardsData[i].username}`);
+          const payload ={
+            targetId: cardsData[i].id
+          }
+          dispatch(swipeRight(payload))
         }}
       />
       <View style={styles.controlRow}>

@@ -63,11 +63,11 @@ export default function App() {
             headerTintColor: "white",
           }}
         >
-          <Stack.Screen
+          {/* <Stack.Screen
             name="OnBoard"
             options={{ headerShown: false }}
             component={OnBoard}
-          />
+          /> */}
           {/* <Stack.Screen name="Profile"  options={{ headerShown: false }} component={Profile} /> */}
           <Stack.Screen
             name="Login"

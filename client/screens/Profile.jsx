@@ -24,7 +24,7 @@ import { fetchUserProfile } from "../stores/actions/profileAction";
 export default function Profile({ navigation }) {
   const data = useSelector(state => state.profileState.profileData)
   const loading = useSelector(state => state.profileState.loadingProfile)
-  console.log('================', data, '==============')
+  // console.log('================', data, '==============')
   let dispatch = useDispatch()
 
   useEffect(() => {

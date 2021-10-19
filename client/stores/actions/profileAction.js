@@ -31,6 +31,7 @@ export function fetchUserProfile() {
           "Content-Type": "application/json",
         },
       });
+      console.log("INI DATANYA BROK", data);
       dispatch(setDataProfile(data))
       dispatch(setLoadingProfile(false))
     } catch (error) {
