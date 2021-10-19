@@ -169,7 +169,7 @@ export default function Explore({navigation}) {
 
   const dispatch = useDispatch()
 
-  const cardsData = useSelector(state => state.usersState)
+  const cardsData = useSelector(state => state.usersState.users)
   // console.log("data USer", cardsData);
 
   useEffect(() => {
@@ -213,7 +213,7 @@ export default function Explore({navigation}) {
             <ImageBackground
               style={styles.cardImg}
               imageStyle={{ borderRadius: 25}}
-              source={{uri: card.photo}}
+              source={{uri: card?.photo}}
             > 
               <LinearGradient 
                 colors={['#00000000', '#00000000', 'black']} 
@@ -227,8 +227,8 @@ export default function Explore({navigation}) {
                 }}
               />
               <View style={styles.cardText}>
-                <Text style={styles.cardName}>{card.username}</Text>
-                <Text style={styles.cardAge}>{card.age}</Text>                
+                <Text style={styles.cardName}>{card?.username}</Text>
+                <Text style={styles.cardAge}>{card?.age}</Text>                
               </View>
 
             </ImageBackground>

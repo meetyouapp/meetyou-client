@@ -74,17 +74,18 @@ export function setUsersAsync() {
     dispatch(setLoadingUsers(true));
     
     try {
-      let token = await AsyncStorage.getItem('access_token')
-      console.log("Token lintrik", token);
+      // let token = await AsyncStorage.getItem('access_token')
+      // console.log("Token lintrik", token);
       const response = await instance({
-        method: 'get',
+        method: 'GET',
         url: '/user',
         headers: {
-          "access_token": await AsyncStorage.getItem('access_token')
+          "Content-Type": "application/json",
+          access_token: await AsyncStorage.getItem('access_token')
         }
       })
       const data = response.data;
-      console.log("DATA USER BROK", data);
+      // console.log("DATA USER BROK", data);
       await dispatch(setUsers(data));
     } catch (error) {
       console.log(error);
