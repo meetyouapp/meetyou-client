@@ -23,8 +23,8 @@ import {
   SectionList,
   Checkbox,
   List,
-  Button,
 } from "native-base";
+import { Button } from "react-native-elements";
 import { Link } from "@react-navigation/native";
 import { auth } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLogin, access_token, errorLogin } = useSelector(
+  const { isLogin, errorLogin, access_token } = useSelector(
     (state) => state.usersState
   );
 
@@ -47,29 +47,26 @@ export default function Login({ navigation }) {
     }
   });
 
-  const loginHandler = () => {
+  const loginHandler = async () => {
     const payload = {
       email: email,
       password: password,
     };
-
     dispatch(loginUsersAsync(payload));
     if (!errorLogin && isLogin === true) {
       try {
-        AsyncStorage.setItem("access_token", access_token).then(() =>
-          console.log("ada token")
-        );
+        await AsyncStorage.setItem("access_token", access_token);
+
+        setEmail("");
+        setPassword("");
       } catch (error) {
         console.log(error);
       }
     }
-
-    setEmail("");
-    setPassword("");
   };
 
   console.log(isLogin);
-  console.log(access_token, "tokennn");
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground
@@ -175,16 +172,15 @@ export default function Login({ navigation }) {
               alignItems: "center",
             }}
           >
-            <NativeBaseProvider>
+            <View style={styles.containerBtn}>
               <Button
-                style={styles.loginButton}
-                variant="subtle"
-                colorScheme="secondary" //
+                buttonStyle={styles.loginBtn}
+                containerStyle={styles.button}
+                raised
                 onPress={loginHandler}
-              >
-                <Text style={{ color: "#fff" }}>Login</Text>
-              </Button>
-            </NativeBaseProvider>
+                title="Sign In"
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -220,11 +216,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
   },
-  loginButton: {
-    alignSelf: "center",
+  loginBtn: {
+    backgroundColor: componentsColor,
+  },
+  button: {
+    width: 200,
+    marginTop: 10,
     backgroundColor: componentsColor,
     borderRadius: 100,
-    width: Dimensions.get("window").width / 2,
+  },
+  containerBtn: {
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
 });
