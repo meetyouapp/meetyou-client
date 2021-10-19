@@ -52,6 +52,7 @@ export default class OnBoard extends React.Component {
     this.props.navigation.navigate("Login");
     // User finished the introduction. Show real app through
     // navigation or simply by controlling state
+    this.props.navigation.navigate('Login')
     this.setState({ showRealApp: true });
   };
   render() {
