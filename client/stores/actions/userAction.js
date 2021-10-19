@@ -9,6 +9,7 @@ import {
   SET_TOKEN_USERS,
   SET_USERS,
 } from "../actionType";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export function setUsers(users) {
   return {
@@ -67,12 +68,22 @@ export function registerUsers(user) {
 }
 
 export function setUsersAsync() {
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    instance
-      .post(`/user`)
+    // let token = await AsyncStorage.getItem('access_token')
+    // console.log(token);
+    instance({
+      method: 'get',
+      url: '/user',
+      headers: {
+        'Accept': 'application/json',
+        "Content-Type": "application/json",
+        "access_token": await AsyncStorage.getItem('access_token')
+      }
+    })
       .then((res) => {
         const data = res.data;
+        // console.log("DATA USER BROK", data);
         dispatch(setUsers(data));
       })
       .catch((err) => {
@@ -90,6 +101,8 @@ export function registerUsersAsync(payload) {
       .post(`/register`, payload)
       .then((res) => {
         const data = res.data;
+        dispatch(setUsers(data));//cek access token
+
         dispatch(registerUsers(data));
         console.log("register brhasil");
       })
@@ -105,13 +118,15 @@ export function loginUsersAsync(payload) {
   console.log(payload);
   return function (dispatch) {
     dispatch(setLoadingUsers(true));
-    instance
+    return instance
       .post(`/login`, payload)
       .then((res) => {
         const token = res.data.access_token;
         dispatch(loginUsers(true));
         dispatch(setTokenUsers(token));
+        // console.log(token);
         console.log("berhasil login");
+        return token
       })
       .catch((err) => {
         console.log(err, "disiniii");

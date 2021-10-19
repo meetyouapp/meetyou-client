@@ -52,24 +52,28 @@ export default function Login({ navigation }) {
     return unsubscribe;
   }, [isLogin]);
 
-  const loginHandler = () => {
+  const loginHandler = async () => {
     const payload = {
       email: email,
       password: password,
     };
 
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        // console.log(authUser);
-      })
-      .catch((err) => console.log(err, "disini?"));
+    // auth
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then((authUser) => {
+    //     // console.log(authUser);
+    //   })
+    //   .catch((err) => console.log(err, "disini?"));
+    
+    const token = await dispatch(loginUsersAsync(payload));
+    // console.log("access tokennya", access_token);
+    console.log(token);
+    await AsyncStorage.setItem("access_token", token);
+  
+  
 
-    dispatch(loginUsersAsync(payload));
-    AsyncStorage.setItem("access_token", access_token);
-
-    setEmail("");
-    setPassword("");
+    // setEmail("");
+    // setPassword("");
   };
 
   console.log(isLogin);

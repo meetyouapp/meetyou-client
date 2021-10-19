@@ -50,7 +50,7 @@ export default function App() {
       <NavigationContainer>
         <StatusBar style="light" />
         <Stack.Navigator
-          initialRouteName="TabScreen"
+          initialRouteName="Login"
           screenOptions={{
             headerShadowVisible: false,
             headerTitleAlign: "center",

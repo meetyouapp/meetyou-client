@@ -7,6 +7,10 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { borderRadius, paddingBottom, paddingTop } from 'styled-system';
 import * as Location from 'expo-location';
 
+import { useSelector, useDispatch } from "react-redux";
+import { setUsersAsync } from "../stores/actions/userAction"
+
+
 const cardsData = [
   {
     "username": "Chris",
@@ -163,6 +167,16 @@ const cardsData = [
 export default function Explore({navigation}) {
   const swiper = useRef(null);
 
+  const dispatch = useDispatch()
+
+  const userData = useSelector(state => state.users)
+  console.log("data USer", userData);
+
+  useEffect(() => {
+    dispatch(setUsersAsync())
+    // console.log(userData);
+  }, [])
+
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -176,7 +190,7 @@ export default function Explore({navigation}) {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location);
+      // console.log(location);
     })();
   }, []);
 
