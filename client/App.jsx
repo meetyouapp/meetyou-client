@@ -4,9 +4,8 @@ import { StyleSheet, Text, View, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 import { Provider } from "react-redux";
-
 
 import Login from "./screens/Login";
 import Register from "./screens/Register";
@@ -26,8 +25,8 @@ export default function App() {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
@@ -37,7 +36,7 @@ export default function App() {
     })();
   }, []);
 
-  let text = 'Waiting..';
+  let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
@@ -45,12 +44,11 @@ export default function App() {
   }
 
   return (
-
     <Provider store={store}>
       <NavigationContainer>
         <StatusBar style="light" />
         <Stack.Navigator
-          initialRouteName="Login"
+          // initialRouteName="Login"
           screenOptions={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
@@ -81,7 +79,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-
   );
 }
 

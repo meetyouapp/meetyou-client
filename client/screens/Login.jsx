@@ -37,26 +37,22 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLogin, access_token } = useSelector((state) => state.usersState);
+  const { isLogin, access_token, errorLogin } = useSelector(
+    (state) => state.usersState
+  );
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser && isLogin === true) {
-        // console.log(authUser);
-        console.log("kapan mulaiiiii");
-        navigation.replace("TabScreen");
-        console.log("kapan mulai");
-      }
-    });
-
-    return unsubscribe;
-  }, [isLogin]);
+    if (isLogin === true && AsyncStorage.getItem("access_token")) {
+      navigation.replace("TabScreen");
+    }
+  });
 
   const loginHandler = async () => {
     const payload = {
       email: email,
       password: password,
     };
+
 
     // auth
     //   .signInWithEmailAndPassword(email, password)
@@ -66,17 +62,29 @@ export default function Login({ navigation }) {
     //   .catch((err) => console.log(err, "disini?"));
     
     const token = await dispatch(loginUsersAsync(payload));
-    // console.log("access tokennya", access_token);
-    console.log(token);
+    console.log("access tokennya", access_token);
+    // console.log("Token di login js", token);
     await AsyncStorage.setItem("access_token", token);
   
   
+    dispatch(loginUsersAsync(payload));
+    if (!errorLogin && isLogin === true) {
+      try {
+        AsyncStorage.setItem("access_token", access_token).then(() =>
+          console.log("ada token")
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
 
     // setEmail("");
     // setPassword("");
   };
 
   console.log(isLogin);
+  console.log(access_token, "tokennn");
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground

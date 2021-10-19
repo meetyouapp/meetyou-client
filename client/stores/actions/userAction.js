@@ -47,6 +47,7 @@ export function setErrorLogin(error) {
 }
 
 export function loginUsers(isLogin) {
+  // console.log(isLogin);
   return {
     type: SET_LOGIN_USERS,
     payload: isLogin,
@@ -54,6 +55,7 @@ export function loginUsers(isLogin) {
 }
 
 export function setTokenUsers(token) {
+  // console.log(token, "di set token");
   return {
     type: SET_TOKEN_USERS,
     payload: token,
@@ -70,20 +72,18 @@ export function registerUsers(user) {
 export function setUsersAsync() {
   return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    // let token = await AsyncStorage.getItem('access_token')
-    // console.log(token);
+    let token = await AsyncStorage.getItem('access_token')
+    console.log("Token lintrik", token);
     instance({
       method: 'get',
       url: '/user',
       headers: {
-        'Accept': 'application/json',
-        "Content-Type": "application/json",
         "access_token": await AsyncStorage.getItem('access_token')
       }
     })
       .then((res) => {
         const data = res.data;
-        // console.log("DATA USER BROK", data);
+        console.log("DATA USER BROK", data);
         dispatch(setUsers(data));
       })
       .catch((err) => {
@@ -121,10 +121,12 @@ export function loginUsersAsync(payload) {
     return instance
       .post(`/login`, payload)
       .then((res) => {
+        // console.log(res, "loginn");
         const token = res.data.access_token;
+        console.log("INI APA", token);
         dispatch(loginUsers(true));
         dispatch(setTokenUsers(token));
-        // console.log(token);
+        console.log("Token Login", token);
         console.log("berhasil login");
         return token
       })
