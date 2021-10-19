@@ -9,6 +9,8 @@ export const SET_ERROR_REGISTER = "users/setErrorRegister";
 export const SET_ERROR_LOGIN = "users/setErrorLogin";
 export const SET_CHATS = "chats/setChats";
 export const SET_LOADING_CHATS = "chats/setLoadingChats";
+export const SET_SWIPE_RIGHT = "users/swipeRight";
+export const SET_SWIPE_LEFT = "users/swipeLeft";
 
 export const SET_LOADING_PROFILE = "profile/setLoadingProfile"
 export const SET_DATA_PROFILE = "profile/setDataProfile"
