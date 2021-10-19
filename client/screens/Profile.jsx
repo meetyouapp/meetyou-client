@@ -24,11 +24,11 @@ import { fetchUserProfile } from "../stores/actions/profileAction";
 export default function Profile({ navigation }) {
   const data = useSelector(state => state.profileState.profileData)
   const loading = useSelector(state => state.profileState.loadingProfile)
-  // console.log('================', datax, '==============')
+  console.log('================', data, '==============')
   let dispatch = useDispatch()
 
   useEffect(() => {
-    getStorage();
+    // getStorage();
     dispatch(fetchUserProfile())
   }, []);
 
@@ -46,6 +46,11 @@ export default function Profile({ navigation }) {
   const [popUpEditProfile, setpopUpEditProfile] = useState(false);
   const [text, setText] = useState("");
 
+  if(loading) {
+    return (
+      <Text>Loading</Text>
+    )
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -65,7 +70,7 @@ export default function Profile({ navigation }) {
             horizontal
             showsHorizontalScrollIndicator={false}
           >
-            {data?.Images.map((img) => {
+            {data?.Images?.map((img) => {
               return (
                 <Image
                   style={styles.userImage}
@@ -88,7 +93,7 @@ export default function Profile({ navigation }) {
             </TouchableOpacity>
           </ScrollView>
           <View style={{ textAlign: "left", bottom: "14%" }}>
-            {data?.UserInterests.map(({Interest}) => {
+            {data?.UserInterests?.map(({Interest}) => {
               return (
                 <Text key={Interest.id} style={styles.interest}>
                   #{Interest.name}
@@ -171,7 +176,7 @@ export default function Profile({ navigation }) {
                         <TextInput
                           style={styles.inputUrl}
                           keyboardType="numeric"
-                          defaultValue={data?.age.toString()}
+                          defaultValue={data?.age?.toString()}
                         />
                         <Text style={styles.inputTitle}>Gender</Text>
                         <Picker selectedValue={data?.gender}>
