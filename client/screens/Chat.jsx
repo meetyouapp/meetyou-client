@@ -13,6 +13,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import ListChat from "../components/ListChat";
 import { setChatsAsync } from "../stores/actions/chatAction";
+import { componentsColor } from "../constants/Color";
 
 export default function Chat({ navigation }) {
   const { chats } = useSelector((state) => state.chatsState);

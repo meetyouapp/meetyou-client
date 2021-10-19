@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "../../apis/api";
 import {
   SET_ERROR_LOGIN,
@@ -106,22 +107,16 @@ export function registerUsersAsync(payload) {
 
 export function loginUsersAsync(payload) {
   console.log(payload);
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    instance
-      .post(`/login`, payload)
-      .then((res) => {
-        // console.log(res, "loginn");
-        const token = res.data.access_token;
-        // console.log(token);
-        dispatch(loginUsers(true));
-        dispatch(setTokenUsers(token));
-        console.log("berhasil login");
-      })
-      .catch((err) => {
-        console.log(err, "disiniii");
-        dispatch(setErrorLogin(err));
-      })
-      .finally(() => dispatch(setLoadingUsers(false)));
+    try {
+      const response = await instance.post(`/login`, payload);
+      const data = response.data;
+      dispatch(setTokenUsers(data.access_token));
+      dispatch(loginUsers(true));
+      await AsyncStorage.setItem("access_token", data.access_token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
