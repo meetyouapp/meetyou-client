@@ -57,7 +57,7 @@ export default function Login({ navigation }) {
     dispatch(loginUsersAsync(payload));
   };
 
-  console.log(access_token);
+  // console.log(access_token);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

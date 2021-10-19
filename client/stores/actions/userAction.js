@@ -87,19 +87,21 @@ export function setUsersAsync() {
 }
 
 export function registerUsersAsync(payload) {
+  console.log(payload);
   return function (dispatch) {
     dispatch(setLoadingUsers(true));
     instance
-      .post(`/register`, payload)
+      .post(`/register`, { payload })
       .then((res) => {
-        const data = res.data;
+        console.log(res);
+        let data = res.data;
         console.log(data);
         dispatch(registerUsers(data));
         console.log("register brhasil");
       })
       .catch((err) => {
-        console.log(err, "di registerrrr");
         dispatch(setErrorRegister(err.response.data.message));
+        console.log(err.response.data.message, "di registerrrr");
       })
       .finally(() => dispatch(setLoadingUsers(false)));
   };

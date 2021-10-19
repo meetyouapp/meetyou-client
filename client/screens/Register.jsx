@@ -35,7 +35,6 @@ import { ErrorHandle } from "../components/errorHandle";
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const interests = useSelector((state) => state.interestsState.interests);
-  const { access_token } = useSelector((state) => state.usersState);
   const { errorRegister } = useSelector((state) => state.usersState);
 
   const [username, setUsername] = useState("");
@@ -86,7 +85,7 @@ export default function Login({ navigation }) {
     });
   }
 
-  const registerHandler = () => {
+  function registerHandler() {
     const payload = {
       username: username,
       email: email,
@@ -110,7 +109,7 @@ export default function Login({ navigation }) {
     setAbout("");
     setGender("");
     setAge("");
-  };
+  }
 
   return (
     <ScrollView style={styles.container}>
