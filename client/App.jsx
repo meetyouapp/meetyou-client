@@ -15,6 +15,7 @@ import Detail from "./screens/Detail";
 import OnBoard from "./screens/OnBoard";
 import { componentsColor } from "./constants/Color";
 import store from "./stores";
+import RoomChat from "./screens/RoomChat";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -78,6 +79,11 @@ export default function App() {
             name="TabScreen"
             component={TabScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Chats"
+            component={RoomChat}
+            options={{ headerShown: true }}
           />
         </Stack.Navigator>
       </NavigationContainer>
