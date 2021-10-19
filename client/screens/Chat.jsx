@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ListChat from "../components/ListChat";
 import { setChatsAsync } from "../stores/actions/chatAction";
 import { componentsColor } from "../constants/Color";
+import { StatusBar } from "expo-status-bar";
 
 export default function Chat({ navigation }) {
   const { chats } = useSelector((state) => state.chatsState);
@@ -32,13 +33,30 @@ export default function Chat({ navigation }) {
     dispatch(setChatsAsync());
   }, []);
 
+  const enterChat = (id, chatName) => {
+    navigation.navigate({
+      name: "Chats",
+      params: {
+        id,
+        chatName,
+      },
+    });
+  };
+
   return (
     <View>
-      <ScrollView>
+      <StatusBar style="dark" />
+      <ScrollView style={styles.container}>
         {chatsData?.map(({ id, photo, username }) => {
           // console.log(username);
           return (
-            <ListChat key={id} id={id} photo={photo} chatName={username} />
+            <ListChat
+              key={id}
+              id={id}
+              photo={photo}
+              chatName={username}
+              enterChat={enterChat}
+            />
           );
         })}
       </ScrollView>
@@ -48,9 +66,6 @@ export default function Chat({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    height: "100%",
   },
 });
