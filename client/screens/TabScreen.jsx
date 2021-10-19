@@ -93,9 +93,7 @@ export default function TabScreen({ navigation }) {
                   <Avatar
                     rounded
                     source={{
-                      uri:
-                        auth?.currentUser?.photoURL ||
-                        "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
+                      uri: "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
                     }}
                   />
                 </TouchableOpacity>
