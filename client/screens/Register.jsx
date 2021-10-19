@@ -86,7 +86,7 @@ export default function Login({ navigation }) {
     });
   }
 
-  const registerHandler = () => {
+  const registerHandler = async () => {
     const payload = {
       username: username,
       email: email,
@@ -106,19 +106,7 @@ export default function Login({ navigation }) {
     };
     dispatch(registerUsersAsync(payload));
     if (errorRegister === null) {
-      auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((authUser) => {
-          authUser.user.updateProfile({
-            displayName: username,
-            photoURL:
-              photo ||
-              "https://www.pikpng.com/pngl/m/16-168770_user-iconset-no-profile-picture-icon-circle-clipart.png",
-          });
-          dispatch(loginUsersAsync(payloadLogin));
-          AsyncStorage.setItem("access_token", access_token);
-        })
-        .catch((err) => console.log(err.message, "masuk sini kah"));
+      dispatch(loginUsersAsync(payloadLogin));
     } else {
       if (Array.isArray(errorRegister)) {
         errorRegister.map((el) => alert(el));

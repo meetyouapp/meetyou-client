@@ -46,6 +46,7 @@ export function setErrorLogin(error) {
 }
 
 export function loginUsers(isLogin) {
+  // console.log(isLogin);
   return {
     type: SET_LOGIN_USERS,
     payload: isLogin,
@@ -53,6 +54,7 @@ export function loginUsers(isLogin) {
 }
 
 export function setTokenUsers(token) {
+  console.log(token, "di set token");
   return {
     type: SET_TOKEN_USERS,
     payload: token,
@@ -108,7 +110,9 @@ export function loginUsersAsync(payload) {
     instance
       .post(`/login`, payload)
       .then((res) => {
+        // console.log(res, "loginn");
         const token = res.data.access_token;
+        console.log(token);
         dispatch(loginUsers(true));
         dispatch(setTokenUsers(token));
         console.log("berhasil login");

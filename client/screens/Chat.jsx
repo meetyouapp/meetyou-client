@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -10,11 +10,23 @@ import {
   CardItem,
   TouchableOpacity,
 } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListChat from "../components/ListChat";
 
 export default function Chat({ navigation }) {
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
+    try {
+      AsyncStorage.getItem("access_token").then((value) => console.log(value));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View>
       <ScrollView>
