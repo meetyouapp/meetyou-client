@@ -15,10 +15,9 @@ import { editLocation } from "../stores/actions/profileAction"
 export default function Explore({navigation}) {
   const swiper = useRef(null);
   const dispatch = useDispatch()
-  let userId // untuk ambil id di dalam CardsSwipe
 
   const cardsData = useSelector(state => state.usersState.users)
-  // console.log("data USer", cardsData);
+  console.log("data USer", cardsData);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -52,106 +51,124 @@ export default function Explore({navigation}) {
     text = JSON.stringify(location);
   }
 
-  return (
-    <View style={styles.container}>
-      <CardsSwipe
-        ref={swiper}
-        cards={cardsData}
-        containerStyle={styles.cardsSwipeContainer}
-        cardContainerStyle={styles.cardContainer}
-        loop={false}
-        renderCard={(card) => (                
-          <View style={styles.card}>
-            <ImageBackground
-              style={styles.cardImg}
-              imageStyle={{ borderRadius: 25}}
-              source={{uri: card?.photo}}
-            > 
-              <LinearGradient 
-                colors={['#00000000', '#00000000', 'black']} 
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  height: '100%',
-                  borderRadius: 25
-                }}
-              />
-              <View style={styles.cardRow}>
-                <View style={styles.cardText}>
-                  <Text style={styles.cardName}>{card?.username}</Text>
-                  <Text style={styles.cardAge}>{card?.age}</Text>                
-                </View>
-                {/* DETAIL */}  
-                <TouchableOpacity
-                  style={styles.cardText}
-                  onPress={() => {
-                  navigation.push('Detail', { id: card?.id })
-                }}
-                >
-                  <Ionicons name="information-circle" size={30} color="white" />
-                </TouchableOpacity>
-              </View>
-
-            </ImageBackground>
-          </View>
-        )}
-        renderNoMoreCard={() => (
-          <View style={styles.noMoreCard}>
-            <Text>{'No more Cards!'}</Text>
-          </View>
-        )}
-        renderYep={() => (
-          <View style={styles.like}>
-            <Text style={styles.likeLabel}>LIKE</Text>
-          </View>
-        )}
-        renderNope={() => (
-          <View style={styles.nope}>
-            <Text style={styles.nopeLabel}>NOPE</Text>
-          </View>
-        )}
-        onSwipedLeft={(i) => {
-          console.log(`saya tidak suka ${cardsData[i].username}`);
-          const payload ={
-            targetId: cardsData[i].id
-          }
-          dispatch(swipeLeft(payload))
-        }}
-        onSwipedRight={(i) => {
-          console.log(`saya suka ${cardsData[i].username}`);
-          const payload ={
-            targetId: cardsData[i].id
-          }
-          dispatch(swipeRight(payload))
-        }}
-      />
-      <View style={styles.controlRow}>
-        {/* DISLIKE */}
-        <TouchableOpacity
-          onPress={() => {
-            if (swiper.current) swiper.current.swipeLeft();
-          }}
-          style={[styles.button, styles.leftBtn]}
-        >
-          <Icon name="x" size={32} color="#ec5288" />
-        </TouchableOpacity>
-
-
-
-        {/* LIKE */}
-        <TouchableOpacity
-          onPress={() => {
-            if (swiper.current) swiper.current.swipeRight();
-          }}
-          style={[styles.button, styles.rightBtn]}
-        >
-          <Icon name="heart" size={32} color="#6ee3b4" />
-        </TouchableOpacity>
+  if (cardsData.length < 1) {
+    return (
+      <View style={styles.theEnd}>
+        <Image
+          source={require("../images/logo-pink.png")}
+          style={styles.image}
+        />
+        <Text style={styles.theEndText}>Too bad, </Text>
+        <Text style={styles.theEndText}>no new people around you</Text>
       </View>
-    </View>
-  );
+    )
+  } else {
+    return (
+      <View style={styles.container}>
+        <CardsSwipe
+          ref={swiper}
+          cards={cardsData}
+          containerStyle={styles.cardsSwipeContainer}
+          cardContainerStyle={styles.cardContainer}
+          loop={false}
+          renderCard={(card) => (                
+            <View style={styles.card}>
+              <ImageBackground
+                style={styles.cardImg}
+                imageStyle={{ borderRadius: 25}}
+                source={{uri: card?.photo}}
+              > 
+                <LinearGradient 
+                  colors={['#00000000', '#00000000', 'black']} 
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    height: '100%',
+                    borderRadius: 25
+                  }}
+                />
+                <View style={styles.cardRow}>
+                  <View style={styles.cardText}>
+                    <Text style={styles.cardName}>{card?.username}</Text>
+                    <Text style={styles.cardAge}>{card?.age}</Text>                
+                  </View>
+                  {/* DETAIL */}  
+                  <TouchableOpacity
+                    style={styles.cardText}
+                    onPress={() => {
+                    navigation.push('Detail', { id: card?.id })
+                  }}
+                  >
+                    <Ionicons name="information-circle" size={30} color="white" />
+                  </TouchableOpacity>
+                </View>
+  
+              </ImageBackground>
+            </View>
+          )}
+          renderNoMoreCard={() => (
+            <View style={styles.theEnd}>
+              <Image
+                source={require("../images/logo-pink.png")}
+                style={styles.noCardImage}
+              />
+              <Text style={styles.theEndText}>Too bad, </Text>
+              <Text style={styles.theEndText}>no new people around you</Text>
+            </View>
+          )}
+          renderYep={() => (
+            <View style={styles.like}>
+              <Text style={styles.likeLabel}>LIKE</Text>
+            </View>
+          )}
+          renderNope={() => (
+            <View style={styles.nope}>
+              <Text style={styles.nopeLabel}>NOPE</Text>
+            </View>
+          )}
+          onSwipedLeft={(i) => {
+            console.log(`saya tidak suka ${cardsData[i].username}`);
+            const payload ={
+              targetId: cardsData[i].id
+            }
+            dispatch(swipeLeft(payload))
+          }}
+          onSwipedRight={(i) => {
+            console.log(`saya suka ${cardsData[i].username}`);
+            const payload ={
+              targetId: cardsData[i].id
+            }
+            dispatch(swipeRight(payload))
+          }}
+        />
+        <View style={styles.controlRow}>
+          {/* DISLIKE */}
+          <TouchableOpacity
+            onPress={() => {
+              if (swiper.current) swiper.current.swipeLeft();
+            }}
+            style={[styles.button, styles.leftBtn]}
+          >
+            <Icon name="x" size={32} color="#ec5288" />
+          </TouchableOpacity>
+  
+  
+  
+          {/* LIKE */}
+          <TouchableOpacity
+            onPress={() => {
+              if (swiper.current) swiper.current.swipeRight();
+            }}
+            style={[styles.button, styles.rightBtn]}
+          >
+            <Icon name="heart" size={32} color="#6ee3b4" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -284,5 +301,25 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: 'lightgreen',
     fontWeight: 'bold',
+  },
+  theEnd: {
+    flex: 1, 
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  theEndText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#ff3562'
+  },
+  image: {
+    width: "50%", 
+    height: "30%",
+    margin: 10
+  },
+  noCardImage: {
+    width: "100%", 
+    height: "30%",
+    margin: 10
   },
 });
