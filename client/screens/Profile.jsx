@@ -14,7 +14,7 @@ import {
   Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import GestureRecognizer from 'react-native-swipe-gestures';
+import GestureRecognizer from "react-native-swipe-gestures";
 import { componentsColor } from "../constants/Color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,34 +22,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile } from "../stores/actions/profileAction";
 
 export default function Profile({ navigation }) {
-  const data = useSelector(state => state.profileState.profileData)
-  const loading = useSelector(state => state.profileState.loadingProfile)
+  const data = useSelector((state) => state.profileState.profileData);
+  const loading = useSelector((state) => state.profileState.loadingProfile);
   // console.log('================', data, '==============')
-  let dispatch = useDispatch()
+  let dispatch = useDispatch();
 
   useEffect(() => {
     // getStorage();
-    dispatch(fetchUserProfile())
+    dispatch(fetchUserProfile());
   }, []);
 
-  const getStorage = async () => {
-    try {
-      await AsyncStorage.getItem("access_token").then((value) =>
-        console.log(value, "token di home")
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getStorage = async () => {
+  //   try {
+  //     await AsyncStorage.getItem("access_token").then((value) =>
+  //       console.log(value, "token di home")
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const [popUpAddImage, setpopUpAddImage] = useState(false);
   const [popUpEditProfile, setpopUpEditProfile] = useState(false);
   const [text, setText] = useState("");
 
-  if(loading) {
-    return (
-      <Text>Loading</Text>
-    )
+  if (loading) {
+    return <Text>Loading</Text>;
   }
   return (
     <ScrollView>
@@ -93,109 +91,108 @@ export default function Profile({ navigation }) {
             </TouchableOpacity>
           </ScrollView>
           <View style={{ textAlign: "left", bottom: "14%" }}>
-            {data?.UserInterests?.map(({Interest}) => {
+            {data?.UserInterests?.map(({ Interest }) => {
               return (
                 <Text key={Interest.id} style={styles.interest}>
                   #{Interest.name}
                 </Text>
               );
             })}
-
           </View>
-            <GestureRecognizer onSwipeDown={ () => setpopUpAddImage(false) }>
-              <View>
-                <Modal
-                  style={styles.centeredView}
-                  animationType="slide"
-                  transparent={true}
-                  visible={popUpAddImage}
-                  onRequestClose={() => {
-                    setpopUpAddImage(false);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>Add New Photo</Text>
-                      <View style={{ padding: 10 }}>
-                        <TextInput
-                          style={styles.inputUrl}
-                          placeholder="Add Image Url"
-                          onChangeText={(text) => setText(text)}
-                          defaultValue={text}
-                        />
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 24,
-                            textAlign: "center",
-                          }}
-                        >
-                          {text}
-                        </Text>
-                      </View>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => setpopUpAddImage(false)}
+          <GestureRecognizer onSwipeDown={() => setpopUpAddImage(false)}>
+            <View>
+              <Modal
+                style={styles.centeredView}
+                animationType="slide"
+                transparent={true}
+                visible={popUpAddImage}
+                onRequestClose={() => {
+                  setpopUpAddImage(false);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Add New Photo</Text>
+                    <View style={{ padding: 10 }}>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="Add Image Url"
+                        onChangeText={(text) => setText(text)}
+                        defaultValue={text}
+                      />
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 24,
+                          textAlign: "center",
+                        }}
                       >
-                        <Text style={styles.textStyle}>Save</Text>
-                      </Pressable>
+                        {text}
+                      </Text>
                     </View>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setpopUpAddImage(false)}
+                    >
+                      <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
                   </View>
-                </Modal>
-              </View>
-            </GestureRecognizer>
+                </View>
+              </Modal>
+            </View>
+          </GestureRecognizer>
 
-            <GestureRecognizer onSwipeDown={ () => setpopUpEditProfile(false) }>
-              <View>
-                <Modal
-                  style={styles.centeredView2}
-                  animationType="slide"
-                  transparent={true}
-                  visible={popUpEditProfile}
-                  onRequestClose={() => {
-                    setpopUpEditProfile(false);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>Edit Profile</Text>
-                      <View style={{ padding: 10 }}>
-                        <Text style={styles.inputTitle}>Username</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          placeholder="Name"
-                          defaultValue={data?.username}
-                        />
-                        <Text style={styles.inputTitle}>About me</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          placeholder="About"
-                          defaultValue={data?.about}
-                        />
-                        <Text style={styles.inputTitle}>Age</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          keyboardType="numeric"
-                          defaultValue={data?.age?.toString()}
-                        />
-                        <Text style={styles.inputTitle}>Gender</Text>
-                        <Picker selectedValue={data?.gender}>
-                          <Picker.Item label="male" value="male" />
-                          <Picker.Item label="female" value="female" />
-                        </Picker>
-                      </View>
-
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => setpopUpEditProfile(false)}
-                      >
-                        <Text style={styles.textStyle}>Save</Text>
-                      </Pressable>
+          <GestureRecognizer onSwipeDown={() => setpopUpEditProfile(false)}>
+            <View>
+              <Modal
+                style={styles.centeredView2}
+                animationType="slide"
+                transparent={true}
+                visible={popUpEditProfile}
+                onRequestClose={() => {
+                  setpopUpEditProfile(false);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Edit Profile</Text>
+                    <View style={{ padding: 10 }}>
+                      <Text style={styles.inputTitle}>Username</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="Name"
+                        defaultValue={data?.username}
+                      />
+                      <Text style={styles.inputTitle}>About me</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="About"
+                        defaultValue={data?.about}
+                      />
+                      <Text style={styles.inputTitle}>Age</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        keyboardType="numeric"
+                        defaultValue={data?.age?.toString()}
+                      />
+                      <Text style={styles.inputTitle}>Gender</Text>
+                      <Picker selectedValue={data?.gender}>
+                        <Picker.Item label="male" value="male" />
+                        <Picker.Item label="female" value="female" />
+                      </Picker>
                     </View>
+
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setpopUpEditProfile(false)}
+                    >
+                      <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
                   </View>
-                </Modal>
-              </View>
-            </GestureRecognizer>
+                </View>
+              </Modal>
+            </View>
+          </GestureRecognizer>
         </View>
       </View>
       <Pressable
@@ -320,7 +317,7 @@ const styles = StyleSheet.create({
     color: "grey",
     fontWeight: "bold",
     paddingRight: 260,
-    top: '24%'
+    top: "24%",
   },
   horizontalScroll: {
     bottom: "10%",

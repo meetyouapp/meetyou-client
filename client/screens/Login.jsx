@@ -44,8 +44,6 @@ export default function Login({ navigation }) {
   useEffect(() => {
     if (isLogin === true && AsyncStorage.getItem("access_token")) {
       navigation.replace("TabScreen");
-    } else {
-      navigation.navigate("Login");
     }
   }, [isLogin]);
 
@@ -57,7 +55,7 @@ export default function Login({ navigation }) {
     dispatch(loginUsersAsync(payload));
   };
 
-  console.log(access_token);
+  // console.log(isLogin);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

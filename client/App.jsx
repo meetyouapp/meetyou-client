@@ -49,7 +49,7 @@ export default function App() {
       <NavigationContainer>
         <StatusBar style="light" />
         <Stack.Navigator
-          // initialRouteName="Login"
+          initialRouteName="OnBoard"
           screenOptions={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
@@ -63,17 +63,18 @@ export default function App() {
             headerTintColor: "white",
           }}
         >
-          {/* <Stack.Screen
-            name="OnBoard"
-            options={{ headerShown: false }}
-            component={OnBoard}
-          /> */}
-          {/* <Stack.Screen name="Profile"  options={{ headerShown: false }} component={Profile} /> */}
           <Stack.Screen
             name="Login"
             options={{ headerShown: false }}
             component={Login}
           />
+          <Stack.Screen
+            name="OnBoard"
+            options={{ headerShown: false }}
+            component={OnBoard}
+          />
+          {/* <Stack.Screen name="Profile"  options={{ headerShown: false }} component={Profile} /> */}
+
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen

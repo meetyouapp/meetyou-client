@@ -30,7 +30,7 @@ export function setChatsAsync() {
       });
 
       const data = response.data;
-      console.log(data, "dataa");
+      //   console.log(data, "dataa");
       dispatch(setChats(data));
     } catch (error) {
       console.log(error.response.data.message);
