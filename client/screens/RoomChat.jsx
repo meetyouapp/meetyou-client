@@ -66,7 +66,9 @@ const RoomChat = ({ navigation, route }) => {
           >
             <FontAwesome name="video-camera" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+           onPress={() => navigation.navigate({name: 'Place for Date'})}
+          >
             <MaterialIcons name="place" size={24} color="white" />
           </TouchableOpacity>
         </View>

@@ -17,6 +17,7 @@ import { componentsColor } from "./constants/Color";
 import store from "./stores";
 import RoomChat from "./screens/RoomChat";
 import VideoCall from "./screens/VideoCall";
+import DatePlace from "./screens/DatePlace";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -91,6 +92,10 @@ export default function App() {
           <Stack.Screen
             name="Video Call"
             component={VideoCall}
+          />
+          <Stack.Screen
+            name="Place for Date"
+            component={DatePlace}
           />
         </Stack.Navigator>
       </NavigationContainer>
