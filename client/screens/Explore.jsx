@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Image, ImageBackground, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View, Text } from 'react-native';
 import CardsSwipe from 'react-native-cards-swipe';
 import { Feather as Icon } from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { borderRadius, paddingBottom, paddingTop } from 'styled-system';
 import * as Location from 'expo-location';
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setUsersAsync, swipeRight, swipeLeft } from "../stores/actions/userAction"
@@ -13,25 +14,14 @@ import { editLocation } from "../stores/actions/profileAction"
 
 export default function Explore({navigation}) {
   const swiper = useRef(null);
-
   const dispatch = useDispatch()
+  let userId // untuk ambil id di dalam CardsSwipe
 
   const cardsData = useSelector(state => state.usersState.users)
   // console.log("data USer", cardsData);
 
-  // useEffect(() => {
-    
-  // }, [])
-
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
-  // function updateLocation(payload) {
-  //   dispatch(profileLocation(payload))
-  // }
 
   useEffect(() => {
     (async () => {
@@ -70,7 +60,7 @@ export default function Explore({navigation}) {
         containerStyle={styles.cardsSwipeContainer}
         cardContainerStyle={styles.cardContainer}
         loop={false}
-        renderCard={(card) => (
+        renderCard={(card) => (                
           <View style={styles.card}>
             <ImageBackground
               style={styles.cardImg}
@@ -88,9 +78,20 @@ export default function Explore({navigation}) {
                   borderRadius: 25
                 }}
               />
-              <View style={styles.cardText}>
-                <Text style={styles.cardName}>{card?.username}</Text>
-                <Text style={styles.cardAge}>{card?.age}</Text>                
+              <View style={styles.cardRow}>
+                <View style={styles.cardText}>
+                  <Text style={styles.cardName}>{card?.username}</Text>
+                  <Text style={styles.cardAge}>{card?.age}</Text>                
+                </View>
+                {/* DETAIL */}  
+                <TouchableOpacity
+                  style={styles.cardText}
+                  onPress={() => {
+                  navigation.push('Detail', { id: card?.id })
+                }}
+                >
+                  <Ionicons name="information-circle" size={30} color="white" />
+                </TouchableOpacity>
               </View>
 
             </ImageBackground>
@@ -137,14 +138,7 @@ export default function Explore({navigation}) {
           <Icon name="x" size={32} color="#ec5288" />
         </TouchableOpacity>
 
-        {/* DETAIL */}  
-        <TouchableOpacity
-          onPress={() => {
-          navigation.push('Detail')
-        }}
-        >
-          <Ionicons name="information-circle" size={50} color="black" />
-        </TouchableOpacity>
+
 
         {/* LIKE */}
         <TouchableOpacity
@@ -169,7 +163,7 @@ const styles = StyleSheet.create({
   cardsSwipeContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    paddingTop: 50,
+    paddingTop: 20,
     zIndex: 1,
     elevation: 1,
   },
@@ -201,11 +195,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end'
   },
+  cardRow: {
+    flex: 1, 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20
+  },
   cardText: {
     flex: 1, 
     flexDirection: 'column',
-    justifyContent: 'flex-end',
-    padding: 20
+    justifyContent: 'flex-end'
   },
   cardName: {
     fontSize: 30,

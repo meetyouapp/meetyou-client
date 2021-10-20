@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, ScrollView, Button, Image, Linking, Dimensions } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { GET_PRODUCT } from "../apollo/query";
+import { backgroundColor, border, borderBottom, borderRadius, fontWeight } from 'styled-system';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserDetail } from "../stores/actions/profileAction"
+
 
 const {width} = Dimensions.get("window")
 const height = width * 150/100
 
 export default function Detail({route}) {
-  // console.log(route.params.id);
-  // const {id} = route.params
+  const dispatch = useDispatch()
 
-  // const { loading, error, data } = useQuery(GET_PRODUCT, {
-  //   variables: {
-  //     id: id
-  //   }
-  // })
+  console.log(route.params.id);
+  const {id} = route.params
 
-  // if (loading) return <Text>Loading...</Text>
+  const userDetail  = useSelector(state => state.profileState.detailData);
+  console.log(userDetail);
 
-  // if (error) return <Text>Error {JSON.stringify(error)}</Text> 
+  useEffect(() => {
+    dispatch(fetchUserDetail(id))
+  }, [])
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    // <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.container}>
         <View >
           <View>
             <View style={styles.imageScroll}>
@@ -33,85 +35,88 @@ export default function Detail({route}) {
               >
                 <Image 
                   style={styles.image} 
-                  source={{uri: "https://ik.imagekit.io/xvfgr2ixls8/rs_600x600-171023061437-600.sydney-chris-hemsworth.102317_iD5Yb6Dk0g8.jpg?updatedAt=1634356824828" }}
+                  source={{uri: userDetail.photo }}
                 />
-                <Image 
+                {/* <Image 
                   style={styles.image} 
                   source={{uri: "https://pbs.twimg.com/media/Eav5wDGXsAEMUL5.jpg" }}
                 />
-                  <Image 
-                    style={styles.image} 
-                    source={{uri: "https://images.immediate.co.uk/production/volatile/sites/3/2017/10/Thor-Ragnarok-Chris-Hemsworth-0c93964.jpg?quality=90&resize=620,413" }}
-                  />
+                <Image 
+                  style={styles.image} 
+                  source={{uri: "https://images.immediate.co.uk/production/volatile/sites/3/2017/10/Thor-Ragnarok-Chris-Hemsworth-0c93964.jpg?quality=90&resize=620,413" }}
+                /> */}
               </ScrollView>
             </View>
 
-            <View style={{ padding: 10}}>
-              <View style={{ flex: 1, flexDirection: 'row', }}>
-                <Text style={styles.textName}>Chris Hemsworth, </Text>
-                <Text style={styles.textName}>38</Text>
+            <View style={styles.description}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
+                <Text style={styles.textName}>{userDetail.username}</Text>
+                <Text style={styles.textAge}>{userDetail.age}</Text>
               </View>
-              
-              <Text style={styles.textPrice}>I like playing video games</Text>
+              <Text style={styles.about}>About Me</Text>
+              <Text style={styles.textDescription}>{userDetail.about}</Text>
 
             </View>
             
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    // </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  card: {
-    width: "100%",    
-    elevation: 3,
-    backgroundColor: '#fff',
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#333',
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingTop: 10
   },
   imageScroll: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   image: {
+    borderRadius: 30,
     width, 
-    height: 600, 
+    height: "100%", 
     resizeMode: 'cover'
   },
-  textCategory: {
-    fontSize: 12,
-    color: 'grey',
-    paddingBottom: 5
+  description: {
+    marginTop: 10,
+    padding: 20,
+    // backgroundColor: '#ff3562',
+    borderRadius: 30,
+    borderRightColor: 'black',
+    borderLeftColor: 'black',
+    // borderTopWidth: 1,
+    borderRightWidth: 2,
+    borderLeftWidth: 2,
   },
   textName: {
-    fontSize: 20,
+    fontSize: 30,
     color: 'black',
-    paddingBottom: 5
+    fontWeight: 'bold',
+    color: '#555555'
   },
-  textPrice: {
-    fontSize: 15,
-    color: '#3e4444',
-    paddingBottom: 10
+  textAge: {
+    fontSize: 25,
+    color: '#999999',
+    paddingLeft: 10,
+    paddingBottom: 1
   },
   textDescription: {
     fontSize: 15,
-    color: '#3e4444',
-    paddingBottom: 5,
+    color: '#555555',
+    paddingVertical: 5,
     textAlign: 'justify'
   },
   button: {
     color: '#3e4444',
     marginVertical: 20
+  },
+  about: {
+    paddingTop: 20,
+    fontSize: 15
   }
 });
