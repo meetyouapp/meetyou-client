@@ -9,7 +9,7 @@ import {
   SET_TOKEN_USERS,
   SET_USERS,
 } from "../actionType";
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function setUsers(users) {
   return {
@@ -72,38 +72,38 @@ export function registerUsers(user) {
 export function setUsersAsync() {
   return async function (dispatch) {
     dispatch(setLoadingUsers(true));
-    
+
     try {
       // let token = await AsyncStorage.getItem('access_token')
       // console.log("Token lintrik", token);
       const response = await instance({
-        method: 'GET',
-        url: '/user',
+        method: "GET",
+        url: "/users",
         headers: {
           "Content-Type": "application/json",
-          access_token: await AsyncStorage.getItem('access_token')
-        }
-      })
+          access_token: await AsyncStorage.getItem("access_token"),
+        },
+      });
       const data = response.data;
       // console.log("DATA USER BROK", data);
       await dispatch(setUsers(data));
     } catch (error) {
-      console.log(error);
+      console.log(error, "atau km disini");
       dispatch(setErrorUsers(error));
     }
   };
 }
 
 export function registerUsersAsync(payload) {
-  console.log(payload);
+  // console.log(payload);
   return function (dispatch) {
     dispatch(setLoadingUsers(true));
     instance
-      .post(`/register`, { payload })
+      .post(`/register`, payload)
       .then((res) => {
-        console.log(res);
-        let data = res.data;
-        console.log(data);
+        // console.log(res);
+        const data = res.data;
+        // console.log(data);
         dispatch(registerUsers(data));
         console.log("register brhasil");
       })
@@ -116,12 +116,13 @@ export function registerUsersAsync(payload) {
 }
 
 export function loginUsersAsync(payload) {
-  console.log(payload);
+  // console.log(payload);
   return async function (dispatch) {
     dispatch(setLoadingUsers(true));
     try {
       const response = await instance.post(`/login`, payload);
       const data = response.data;
+      // console.log(data);
       dispatch(setTokenUsers(data.access_token));
       dispatch(loginUsers(true));
       await AsyncStorage.setItem("access_token", data.access_token);

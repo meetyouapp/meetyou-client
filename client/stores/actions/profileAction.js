@@ -1,9 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "../../apis/api";
-import {
-  SET_LOADING_PROFILE,
-  SET_DATA_PROFILE
-} from "../actionType";
+import { SET_LOADING_PROFILE, SET_DATA_PROFILE } from "../actionType";
 
 export function setLoadingProfile(loading) {
   return {
@@ -21,7 +18,7 @@ export function setDataProfile(payload) {
 
 export function fetchUserProfile() {
   return async function (dispatch) {
-    dispatch(setLoadingProfile(true))
+    dispatch(setLoadingProfile(true));
     try {
       const { data } = await instance({
         method: "GET",
@@ -31,10 +28,10 @@ export function fetchUserProfile() {
           "Content-Type": "application/json",
         },
       });
-      dispatch(setDataProfile(data))
-      dispatch(setLoadingProfile(false))
+      dispatch(setDataProfile(data));
+      dispatch(setLoadingProfile(false));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 }

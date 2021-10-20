@@ -2,10 +2,14 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 
-const ListChat = ({ id, photo, chatName, enterChat }) => {
+const ListChat = ({ roomId, userId, photo, chatName, enterChat }) => {
   // console.log(chatName, "diphoto");
   return (
-    <ListItem onPress={() => enterChat(id, chatName)} key={id} bottomDivider>
+    <ListItem
+      onPress={() => enterChat(roomId, userId, chatName)}
+      key={roomId}
+      bottomDivider
+    >
       <Avatar
         rounded
         source={{
