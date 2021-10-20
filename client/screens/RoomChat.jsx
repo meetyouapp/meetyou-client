@@ -107,7 +107,7 @@ const RoomChat = ({ navigation, route }) => {
   }, []);
 
   function videoCallHandler() {
-    console.log(data, "===========")
+    console.log(data, "============")
   }
 
   return (
