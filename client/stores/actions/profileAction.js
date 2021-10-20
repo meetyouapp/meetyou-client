@@ -88,3 +88,43 @@ export function editLocation(payload) {
     }
   };
 }
+
+export function editProfileAsync(payload) {
+  return async function (dispatch) {
+    await dispatch(setLoadingProfile(true));
+    try {
+      const { data } = await instance({
+        method: "PUT",
+        url: "/profile",
+        headers: {
+          access_token: await AsyncStorage.getItem("access_token"),
+          "Content-Type": "application/json",
+        },
+        data: payload,
+      });
+      await dispatch(setLoadingProfile(false));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function addImageAsync(payload) {
+  return async function (dispatch) {
+    await dispatch(setLoadingProfile(true));
+    try {
+      const { data } = await instance({
+        method: "POST",
+        url: "/image",
+        headers: {
+          access_token: await AsyncStorage.getItem("access_token"),
+          "Content-Type": "application/json",
+        },
+        data: payload,
+      });
+      await dispatch(setLoadingProfile(false));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
