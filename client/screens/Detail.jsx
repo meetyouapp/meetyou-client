@@ -37,14 +37,15 @@ export default function Detail({route}) {
                   style={styles.image} 
                   source={{uri: userDetail.photo }}
                 />
-                {/* <Image 
-                  style={styles.image} 
-                  source={{uri: "https://pbs.twimg.com/media/Eav5wDGXsAEMUL5.jpg" }}
-                />
-                <Image 
-                  style={styles.image} 
-                  source={{uri: "https://images.immediate.co.uk/production/volatile/sites/3/2017/10/Thor-Ragnarok-Chris-Hemsworth-0c93964.jpg?quality=90&resize=620,413" }}
-                /> */}
+                {
+                  userDetail?.Images?.map((image, index) => (
+                    <Image
+                      key={index}
+                      style={styles.image} 
+                      source={{uri: image?.imgUrl }}
+                    />
+                  ))
+                }
               </ScrollView>
             </View>
 
@@ -55,7 +56,17 @@ export default function Detail({route}) {
               </View>
               <Text style={styles.about}>About Me</Text>
               <Text style={styles.textDescription}>{userDetail.about}</Text>
-
+              <Text style={styles.about}>Passions</Text>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'space-between'}}>
+                {
+                  userDetail?.UserInterests?.map((interest, index) => (
+                    <Text 
+                      key={index}
+                      style={styles.interestBox}
+                    >{ interest?.Interest?.name }</Text>
+                  ))
+                }
+              </View>
             </View>
             
           </View>
@@ -85,7 +96,7 @@ const styles = StyleSheet.create({
   description: {
     marginTop: 10,
     padding: 20,
-    // backgroundColor: '#ff3562',
+    backgroundColor: '#EEEEEE',
     borderRadius: 30,
     borderRightColor: 'black',
     borderLeftColor: 'black',
@@ -116,7 +127,17 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   about: {
-    paddingTop: 20,
+    paddingTop: 15,
+    fontWeight: 'bold',
     fontSize: 15
+  },
+  interestBox: {
+    fontSize: 15,
+    backgroundColor: 'grey',
+    color: 'white',
+    marginRight: 10,
+    marginTop: 8,
+    padding: 10,
+    borderRadius: 18
   }
 });
