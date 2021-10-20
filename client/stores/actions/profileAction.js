@@ -3,8 +3,7 @@ import { instance } from "../../apis/api";
 import {
   SET_LOADING_PROFILE,
   SET_DATA_PROFILE,
-  SET_LATITUDE,
-  SET_LONGITUDE,
+  SET_DATA_DETAIL
 } from "../actionType";
 
 export function setLoadingProfile(loading) {
@@ -21,16 +20,9 @@ export function setDataProfile(payload) {
   };
 }
 
-export function setLatitude(payload) {
+export function setDataDetail(payload) {
   return {
-    type: SET_LATITUDE,
-    payload: payload,
-  };
-}
-
-export function setlongitude(payload) {
-  return {
-    type: SET_LONGITUDE,
+    type: SET_DATA_DETAIL,
     payload: payload,
   };
 }
@@ -55,8 +47,28 @@ export function fetchUserProfile() {
   };
 }
 
+export function fetchUserDetail(id) {
+  return async function (dispatch) {
+    dispatch(setLoadingProfile(true));
+    try {
+      const { data } = await instance({
+        method: "GET",
+        url: `/profile/${id}`,
+        headers: {
+          access_token: await AsyncStorage.getItem("access_token"),
+          "Content-Type": "application/json",
+        },
+      });
+      dispatch(setDataDetail(data));
+      dispatch(setLoadingProfile(false));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function editLocation(payload) {
-  console.log("woiwoi", payload);
+  // console.log("woiwoi", payload);
   return async function (dispatch) {
     dispatch(setLoadingProfile(true));
     try {
