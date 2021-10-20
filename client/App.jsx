@@ -33,7 +33,7 @@ export default function App() {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location);
+      // console.log(location);
     })();
   }, []);
 
