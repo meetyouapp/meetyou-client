@@ -19,3 +19,5 @@ export const SET_DATA_DETAIL = "profile/setDataDetail"
 
 export const SET_VIDEO_CALL = "videoCall/setVideoCall"
 export const SET_LOADING_VIDEO_CALL = "videoCall/setLoadingVideoCall"
+export const GET_VIDEO_CALL = "videoCall/getVideoCall"
+export const SET_ERROR_VIDEO_CALL = "videoCall/setErrorVideoCall"
