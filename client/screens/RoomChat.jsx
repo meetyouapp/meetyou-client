@@ -5,7 +5,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Linking } from "react-native";
 import { Avatar } from "react-native-elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -14,19 +14,24 @@ import { useSelector } from "react-redux";
 import { db } from "../firebase";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "../stores/actions/profileAction";
-import { setVideoCallAsync } from "../stores/actions/videoCallAction"
+import { setVideoCallAsync, getVideoCallAsync } from "../stores/actions/videoCallAction"
 
 const RoomChat = ({ navigation, route }) => {
+  const roomVideo = route.params.roomId
+  console.log(roomVideo, "di RoomChat")
   const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
-  const [videoCall, setVideoCall] = useState()
   const { profileData } = useSelector((state) => state.profileState);
-  const data = useSelector(state => state.videoCallState.videoCall)
+  const payload = {name: roomVideo.toString()}
+  const { videoCall } = useSelector((state) => state.videoCallState)
 
   useEffect(() => {
     dispatch(fetchUserProfile());
-    dispatch(setVideoCallAsync())
   }, []);
+
+  useEffect(() => {
+    dispatch(getVideoCallAsync(payload))
+  }, [])
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -56,7 +61,8 @@ const RoomChat = ({ navigation, route }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate('Video Call')}
+            // onPress={() => navigation.navigate({name: 'Video Call', params: {roomVideo}})}
+            onPress={() => Linking.openURL(videoCall?.url)}
           >
             <FontAwesome name="video-camera" size={24} color="white" />
           </TouchableOpacity>
@@ -106,9 +112,7 @@ const RoomChat = ({ navigation, route }) => {
       });
   }, []);
 
-  function videoCallHandler() {
-    console.log(data, "============")
-  }
+  
 
   return (
     <GiftedChat
