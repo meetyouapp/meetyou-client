@@ -7,10 +7,12 @@ import {
   SET_ERROR_LOGIN,
   SET_ERROR_REGISTER,
   SET_TOKEN_USERS,
+  SET_SWIPE_RIGHT
 } from "../actionType";
 
 const initialState = {
   users: [],
+  targetUser: 0,
   loadingUsers: false,
   errorUsers: null,
   errorRegister: null,
@@ -24,6 +26,9 @@ export default function reducer(state = initialState, action) {
   switch (type) {
     case SET_USERS:
       return { ...state, users: payload };
+
+    case SET_SWIPE_RIGHT:
+      return { ...state, targetUser: payload };
 
     case SET_REGISTER_USERS:
       return { ...state, users: [payload, ...state] };

@@ -13,16 +13,11 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import ListChat from "../components/ListChat";
 import { setChatsAsync } from "../stores/actions/chatAction";
-import { componentsColor } from "../constants/Color";
 import { StatusBar } from "expo-status-bar";
-import { db } from "../firebase";
 import { fetchUserProfile } from "../stores/actions/profileAction";
 
 export default function Chat({ navigation }) {
   const { chats } = useSelector((state) => state.chatsState);
-  // console.log(chats, "sebenermya");
-  const { profileData } = useSelector((state) => state.profileState);
-  const [dbname, setDbname] = useState("");
   const asAuthor = chats?.chatListAuthor?.map((el) => {
     return { id: el.id, target: el.target };
   });
@@ -43,13 +38,6 @@ export default function Chat({ navigation }) {
   }, []);
 
   const enterChat = async (roomId, userId, chatName) => {
-    // console.log(roomId, userId, chatName);
-    // const tempDoc = {};
-
-    // await db
-    //   .collection("chats")
-    //   .add({ room: roomId })
-    //   .then(() => {
     navigation.navigate({
       name: "Chats",
       params: {

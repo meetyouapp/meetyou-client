@@ -8,6 +8,8 @@ import {
   SET_REGISTER_USERS,
   SET_TOKEN_USERS,
   SET_USERS,
+  SET_SWIPE_RIGHT,
+  SET_SWIPE_LEFT,
 } from "../actionType";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,6 +17,19 @@ export function setUsers(users) {
   return {
     type: SET_USERS,
     payload: users,
+  };
+}
+
+export function setTargetUserLike(targetUser) {
+  return {
+    type: SET_SWIPE_RIGHT,
+    payload: targetUser,
+  };
+}
+export function setTargetUserDislike(targetUser) {
+  return {
+    type: SET_SWIPE_LEFT,
+    payload: targetUser,
   };
 }
 
@@ -86,7 +101,7 @@ export function setUsersAsync() {
       });
       const data = response.data;
       // console.log("DATA USER BROK", data);
-      await dispatch(setUsers(data));
+      dispatch(setUsers(data));
     } catch (error) {
       console.log(error, "atau km disini");
       dispatch(setErrorUsers(error));
@@ -126,6 +141,52 @@ export function loginUsersAsync(payload) {
       dispatch(setTokenUsers(data.access_token));
       dispatch(loginUsers(true));
       await AsyncStorage.setItem("access_token", data.access_token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function swipeRight(payload) {
+  console.log(payload);
+  return async function (dispatch) {
+    dispatch(setLoadingUsers(true));
+    try {
+      const response = await instance({
+        method: "POST",
+        url: "/swiperight",
+        headers: {
+          "Content-Type": "application/json",
+          access_token: await AsyncStorage.getItem("access_token"),
+        },
+        data: payload,
+      });
+      const data = response.data;
+      console.log(data);
+      dispatch(setTargetUserLike(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function swipeLeft(payload) {
+  console.log(payload);
+  return async function (dispatch) {
+    dispatch(setLoadingUsers(true));
+    try {
+      const response = await instance({
+        method: "POST",
+        url: "/swipeleft",
+        headers: {
+          "Content-Type": "application/json",
+          access_token: await AsyncStorage.getItem("access_token"),
+        },
+        data: payload,
+      });
+      const data = response.data;
+      console.log(data);
+      dispatch(setTargetUserDislike(data));
     } catch (error) {
       console.log(error);
     }

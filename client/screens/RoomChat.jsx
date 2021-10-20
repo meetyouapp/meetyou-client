@@ -62,21 +62,6 @@ const RoomChat = ({ navigation, route }) => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   setMessages([
-  //     {
-  //       _id: 1,
-  //       text: "Hello developer",
-  //       createdAt: new Date(),
-  //       user: {
-  //         _id: 2,
-  //         name: "React Native",
-  //         avatar: "https://placeimg.com/140/140/any",
-  //       },
-  //     },
-  //   ]);
-  // }, []);
-
   useLayoutEffect(() => {
     const unsubscribe = db
       .collection("chats")
@@ -103,8 +88,7 @@ const RoomChat = ({ navigation, route }) => {
     );
 
     const { _id, createdAt, text, user } = messages[0];
-    console.log(user, "user");
-    console.log(messages[0], "msg");
+
     db.collection("chats")
       .doc(route.params.roomId.toString())
       .collection("messages")
@@ -116,7 +100,6 @@ const RoomChat = ({ navigation, route }) => {
       });
   }, []);
 
-  // console.log(profileData);
   return (
     <GiftedChat
       messages={messages}

@@ -19,7 +19,6 @@ import Profile from "./Profile";
 import Explore from "./Explore";
 import Chat from "./Chat";
 import { Avatar } from "react-native-elements";
-import { auth, db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { loginUsers, setTokenUsers } from "../stores/actions/userAction";
@@ -32,7 +31,7 @@ export default function TabScreen({ navigation }) {
     await AsyncStorage.removeItem("access_token");
     dispatch(loginUsers(false));
     dispatch(setTokenUsers(""));
-    navigation.navigate("Login");
+    navigation.replace("Login");
   };
 
   return (
@@ -79,11 +78,7 @@ export default function TabScreen({ navigation }) {
             return (
               <View style={{ marginRight: 20 }}>
                 <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
-                  <MaterialIcons
-                    name="logout"
-                    size={24}
-                    color={'white'}
-                  />
+                  <MaterialIcons name="logout" size={24} color={"white"} />
                 </TouchableOpacity>
               </View>
             );

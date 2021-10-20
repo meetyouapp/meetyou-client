@@ -44,8 +44,6 @@ export default function Login({ navigation }) {
   useEffect(() => {
     if (isLogin === true && AsyncStorage.getItem("access_token")) {
       navigation.replace("TabScreen");
-    } else {
-      navigation.navigate("Login");
     }
   }, [isLogin]);
 
