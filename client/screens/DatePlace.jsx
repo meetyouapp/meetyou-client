@@ -20,7 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlaceDataAsync } from "../stores/actions/placeAction";
 
-export default function DatePlace() {
+export default function DatePlace({navigation}) {
   const data = useSelector(state => state.placeState.placeData)
   let dispatch = useDispatch()
   
@@ -30,14 +30,24 @@ export default function DatePlace() {
 
   return (
     <View style={styles.container}>
+
       <ScrollView style={styles.listContainer}>
       {data?.map((place) => {
         return (
-          <Image
-            style={styles.placeImage}
-            source={{ uri: place.photo }}
-            key={place.id}
-          ></Image>
+          <View>
+          <TouchableOpacity
+          key={place.id}
+          onPress={() => {
+            navigation.navigate('Place Detail', {url: place.url})
+          }}
+          >
+            <Image
+              style={styles.placeImage}
+              source={{ uri: place.photo }}
+            ></Image>
+          </TouchableOpacity>
+          <Text style={styles.placeName}>{place.name}</Text>
+          </View>
         );
       })}
       </ScrollView>
@@ -54,19 +64,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   listContainer: {
-    marginTop: "0%",
+    marginTop: "5%",
     height: "100%",
     width: '100%',
     backgroundColor: "white",
     borderTopStartRadius: 50,
     borderTopEndRadius: 50,
-    marginLeft: 20
   },
   placeImage: {
-    width: 200,
-    height:100,
+    width: 300,
+    height:200,
     borderRadius: 30,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 5,
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
+  placeName: {
+    fontSize: 18,
+    marginBottom: 25,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 })

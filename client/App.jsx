@@ -18,6 +18,7 @@ import store from "./stores";
 import RoomChat from "./screens/RoomChat";
 import VideoCall from "./screens/VideoCall";
 import DatePlace from "./screens/DatePlace";
+import PlaceWebView from "./screens/PlaceWebView";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -96,6 +97,10 @@ export default function App() {
           <Stack.Screen
             name="Place for Date"
             component={DatePlace}
+          />
+          <Stack.Screen
+            name="Place Detail"
+            component={PlaceWebView}
           />
         </Stack.Navigator>
       </NavigationContainer>
