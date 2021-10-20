@@ -21,3 +21,5 @@ export const SET_VIDEO_CALL = "videoCall/setVideoCall"
 export const SET_LOADING_VIDEO_CALL = "videoCall/setLoadingVideoCall"
 export const GET_VIDEO_CALL = "videoCall/getVideoCall"
 export const SET_ERROR_VIDEO_CALL = "videoCall/setErrorVideoCall"
+
+export const SET_PLACE_DATA = "place/data"
