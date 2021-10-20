@@ -14,14 +14,18 @@ import { useSelector } from "react-redux";
 import { db } from "../firebase";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "../stores/actions/profileAction";
+import { setVideoCallAsync } from "../stores/actions/videoCallAction"
 
 const RoomChat = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
+  const [videoCall, setVideoCall] = useState()
   const { profileData } = useSelector((state) => state.profileState);
+  const data = useSelector(state => state.videoCallState.videoCall)
 
   useEffect(() => {
     dispatch(fetchUserProfile());
+    dispatch(setVideoCallAsync())
   }, []);
 
   useLayoutEffect(() => {
@@ -51,7 +55,9 @@ const RoomChat = ({ navigation, route }) => {
             marginRight: 20,
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Video Call')}
+          >
             <FontAwesome name="video-camera" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -99,6 +105,10 @@ const RoomChat = ({ navigation, route }) => {
         user,
       });
   }, []);
+
+  function videoCallHandler() {
+    console.log(data, "===========")
+  }
 
   return (
     <GiftedChat

@@ -16,6 +16,7 @@ import OnBoard from "./screens/OnBoard";
 import { componentsColor } from "./constants/Color";
 import store from "./stores";
 import RoomChat from "./screens/RoomChat";
+import VideoCall from "./screens/VideoCall";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -86,6 +87,10 @@ export default function App() {
             name="Chats"
             component={RoomChat}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="Video Call"
+            component={VideoCall}
           />
         </Stack.Navigator>
       </NavigationContainer>

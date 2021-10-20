@@ -16,3 +16,6 @@ export const SET_SWIPE_LEFT = "users/swipeLeft";
 export const SET_LOADING_PROFILE = "profile/setLoadingProfile"
 export const SET_DATA_PROFILE = "profile/setDataProfile"
 export const SET_DATA_DETAIL = "profile/setDataDetail"
+
+export const SET_VIDEO_CALL = "videoCall/setVideoCall"
+export const SET_LOADING_VIDEO_CALL = "videoCall/setLoadingVideoCall"
