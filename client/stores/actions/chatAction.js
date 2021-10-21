@@ -35,5 +35,6 @@ export function setChatsAsync() {
     } catch (error) {
       console.log(error.response.data.message);
     }
+    dispatch(setLoadingChats(false));
   };
 }

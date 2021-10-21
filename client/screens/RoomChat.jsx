@@ -5,7 +5,13 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import { StyleSheet, Text, TouchableOpacity, View, Linking } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Linking,
+} from "react-native";
 import { Avatar } from "react-native-elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -13,27 +19,34 @@ import { componentsColor } from "../constants/Color";
 import { useSelector } from "react-redux";
 import { db } from "../firebase";
 import { useDispatch } from "react-redux";
+import { NativeBaseProvider, Center } from "native-base";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 import { fetchUserProfile } from "../stores/actions/profileAction";
-import { setVideoCallAsync, getVideoCallAsync } from "../stores/actions/videoCallAction"
+import {
+  setVideoCallAsync,
+  getVideoCallAsync,
+} from "../stores/actions/videoCallAction";
 
 const RoomChat = ({ navigation, route }) => {
-  const roomVideo = route.params.roomId
-  console.log(roomVideo, "di RoomChat")
+  const roomVideo = route.params.roomId;
+  console.log(roomVideo, "di RoomChat");
   const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
   const { profileData } = useSelector((state) => state.profileState);
-  const payload = {name: roomVideo.toString()}
-  const  videoCallUrl  = useSelector((state) => state?.videoCallState?.videoCallGet)
-  console.log(videoCallUrl, '<<<<<<<<<<')
-  const loading = useSelector((state) => state?.videoCallState?.isLoading)
+  const payload = { name: roomVideo.toString() };
+  const videoCallUrl = useSelector(
+    (state) => state?.videoCallState?.videoCallGet
+  );
+  console.log(videoCallUrl, "<<<<<<<<<<");
+  const loading = useSelector((state) => state?.videoCallState?.isLoading);
 
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, []);
 
   useEffect(() => {
-    dispatch(getVideoCallAsync(payload))
-  }, [])
+    dispatch(getVideoCallAsync(payload));
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -69,7 +82,7 @@ const RoomChat = ({ navigation, route }) => {
             <FontAwesome name="video-camera" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity
-           onPress={() => navigation.navigate({name: 'Place for Date'})}
+            onPress={() => navigation.navigate({ name: "Place for Date" })}
           >
             <MaterialIcons name="place" size={24} color="white" />
           </TouchableOpacity>
@@ -116,23 +129,28 @@ const RoomChat = ({ navigation, route }) => {
       });
   }, []);
 
-  
-  if(loading) {
-    return <Text>Loading</Text>
-  } else {
+  if (loading) {
     return (
-      <GiftedChat
-        messages={messages}
-        showAvatarForEveryMessage={true}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: profileData?.id,
-          name: profileData?.username,
-          avatar: profileData?.photo,
-        }}
-      />
+      <NativeBaseProvider>
+        <Center flex={1} px="3" py="64">
+          <LoadingSpinner color={componentsColor} />
+        </Center>
+      </NativeBaseProvider>
     );
   }
+
+  return (
+    <GiftedChat
+      messages={messages}
+      showAvatarForEveryMessage={true}
+      onSend={(messages) => onSend(messages)}
+      user={{
+        _id: profileData?.id,
+        name: profileData?.username,
+        avatar: profileData?.photo,
+      }}
+    />
+  );
 };
 
 export default RoomChat;

@@ -15,9 +15,12 @@ import ListChat from "../components/ListChat";
 import { setChatsAsync } from "../stores/actions/chatAction";
 import { StatusBar } from "expo-status-bar";
 import { fetchUserProfile } from "../stores/actions/profileAction";
+import { NativeBaseProvider, Center } from "native-base";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export default function Chat({ navigation }) {
-  const { chats } = useSelector((state) => state.chatsState);
+  const { chats, isLoading } = useSelector((state) => state.chatsState);
+  const color = "#333";
   const asAuthor = chats?.chatListAuthor?.map((el) => {
     return { id: el.id, target: el.target };
   });
@@ -36,6 +39,16 @@ export default function Chat({ navigation }) {
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, []);
+
+  if (isLoading) {
+    return (
+      <NativeBaseProvider>
+        <Center flex={1} px="3" py="64">
+          <LoadingSpinner color={color} />
+        </Center>
+      </NativeBaseProvider>
+    );
+  }
 
   const enterChat = async (roomId, userId, chatName) => {
     navigation.navigate({

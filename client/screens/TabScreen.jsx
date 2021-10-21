@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect } from "react";
 import {
   Text,
   View,
@@ -20,8 +20,9 @@ import Explore from "./Explore";
 import Chat from "./Chat";
 import { Avatar } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUsers, setTokenUsers } from "../stores/actions/userAction";
+// import { fetchUserProfile } from "../stores/actions/profileAction";
 
 export default function TabScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ export default function TabScreen({ navigation }) {
 
   return (
     <Tab.Navigator
+      initialRouteName="Explore"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -54,7 +56,7 @@ export default function TabScreen({ navigation }) {
         tabBarInactiveTintColor: "gray",
         tabBarStyle: { height: 55 },
       })}
-      >
+    >
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -94,20 +96,6 @@ export default function TabScreen({ navigation }) {
           headerShadowVisible: false,
           headerTitleStyle: { color: "#333" },
           headerTintColor: "#333",
-          headerLeft: () => {
-            return (
-              <View style={{ marginLeft: 20 }}>
-                <TouchableOpacity activeOpacity={0.5}>
-                  <Avatar
-                    rounded
-                    source={{
-                      uri: "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          },
         }}
       />
     </Tab.Navigator>
