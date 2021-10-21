@@ -58,7 +58,9 @@ const RoomChat = ({ navigation, route }) => {
           <Avatar
             rounded
             source={{
-              uri: "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
+              uri:
+                route.params.photo ||
+                "https://www.onelove.org/wp-content/uploads/2015/10/missingheadshot.jpg",
             }}
           />
           <Text style={{ color: "#fff", marginLeft: 10, fontWeight: "700" }}>

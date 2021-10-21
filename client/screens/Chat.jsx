@@ -50,13 +50,14 @@ export default function Chat({ navigation }) {
     );
   }
 
-  const enterChat = async (roomId, userId, chatName) => {
+  const enterChat = async (roomId, userId, chatName, photo) => {
     navigation.navigate({
       name: "Chats",
       params: {
         roomId,
         userId,
         chatName,
+        photo,
       },
     });
     // });

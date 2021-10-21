@@ -21,7 +21,7 @@ const ListChat = ({ roomId, userId, photo, chatName, enterChat }) => {
 
   return (
     <ListItem
-      onPress={() => enterChat(roomId, userId, chatName)}
+      onPress={() => enterChat(roomId, userId, chatName, photo)}
       key={roomId}
       bottomDivider
     >
