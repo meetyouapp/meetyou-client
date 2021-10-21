@@ -75,7 +75,20 @@ export default function Profile({ navigation }) {
   
   if(loading) {
     return (
-      <Text>Loading</Text>
+      <View style={{
+        flex: 1, 
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Image
+          source={require("../images/loading.gif")}
+          style={{
+            width: "50%", 
+            height: "30%",
+            margin: 10
+          }}
+        />
+      </View>
     )
   }
   return (

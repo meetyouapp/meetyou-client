@@ -40,10 +40,10 @@ export function fetchUserProfile() {
         },
       });
       dispatch(setDataProfile(data));
-      dispatch(setLoadingProfile(false));
     } catch (error) {
       console.log(error);
     }
+    dispatch(setLoadingProfile(false));
   };
 }
 
@@ -60,10 +60,10 @@ export function fetchUserDetail(id) {
         },
       });
       dispatch(setDataDetail(data));
-      dispatch(setLoadingProfile(false));
     } catch (error) {
       console.log(error);
     }
+    dispatch(setLoadingProfile(false));
   };
 }
 

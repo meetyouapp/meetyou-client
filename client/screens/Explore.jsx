@@ -16,8 +16,9 @@ export default function Explore({navigation}) {
   const swiper = useRef(null);
   const dispatch = useDispatch()
 
+  const loading = useSelector(state => state.usersState.loadingUsers)
   const cardsData = useSelector(state => state.usersState.users)
-  console.log("data USer", cardsData);
+  // console.log("data USer", cardsData);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -50,6 +51,17 @@ export default function Explore({navigation}) {
   } else if (location) {
     text = JSON.stringify(location);
   }
+
+  // if(loading) {
+  //   return (
+  //     <View style={styles.loading}>
+  //       <Image
+  //         source={require("../images/loading.gif")}
+  //         style={styles.image}
+  //       />
+  //     </View>
+  //   )
+  // }
 
   if (cardsData.length < 1) {
     return (
@@ -305,7 +317,7 @@ const styles = StyleSheet.create({
   theEnd: {
     flex: 1, 
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   theEndText: {
     fontSize: 15,
@@ -322,4 +334,9 @@ const styles = StyleSheet.create({
     height: "30%",
     margin: 10
   },
+  loading: {
+    flex: 1, 
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
