@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { Provider } from "react-redux";
-
+// import Toast from "react-native-toast-message";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import TabScreen from "./screens/TabScreen";
@@ -20,7 +20,7 @@ import VideoCall from "./screens/VideoCall";
 import DatePlace from "./screens/DatePlace";
 import PlaceWebView from "./screens/PlaceWebView";
 
-export default function App() {
+export default function App(props) {
   const Stack = createNativeStackNavigator();
 
   const [location, setLocation] = useState(null);
@@ -50,6 +50,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
+        {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
         <StatusBar style="light" />
         <Stack.Navigator
           initialRouteName="OnBoard"
@@ -90,18 +91,9 @@ export default function App() {
             component={RoomChat}
             options={{ headerShown: true }}
           />
-          <Stack.Screen
-            name="Video Call"
-            component={VideoCall}
-          />
-          <Stack.Screen
-            name="Place for Date"
-            component={DatePlace}
-          />
-          <Stack.Screen
-            name="Place Detail"
-            component={PlaceWebView}
-          />
+          <Stack.Screen name="Video Call" component={VideoCall} />
+          <Stack.Screen name="Place for Date" component={DatePlace} />
+          <Stack.Screen name="Place Detail" component={PlaceWebView} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
