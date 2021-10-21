@@ -71,11 +71,11 @@ export default function App() {
             options={{ headerShown: false }}
             component={Login}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="OnBoard"
             options={{ headerShown: false }}
             component={OnBoard}
-          /> */}
+          />
           {/* <Stack.Screen name="Profile"  options={{ headerShown: false }} component={Profile} /> */}
 
           <Stack.Screen name="Detail" component={Detail} />

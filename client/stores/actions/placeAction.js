@@ -1,6 +1,7 @@
 import { instance } from "../../apis/api";
 import {
-  SET_PLACE_DATA
+  SET_PLACE_DATA,
+  SET_LOADING_PLACE
 } from "../actionType";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -10,9 +11,15 @@ export function setPlaceData(payload) {
     payload: payload,
   };
 }
-
+export function setLoadingPlace(payload) {
+  return {
+    type: SET_LOADING_PLACE,
+    payload: payload,
+  };
+}
 export function fetchPlaceDataAsync() {
   return async function (dispatch) {
+    dispatch(setLoadingPlace(true))
     try {
       const response = await instance({
         method: "GET",
@@ -25,6 +32,7 @@ export function fetchPlaceDataAsync() {
       const data = response.data;
       console.log("DATA LOKASI BROK", data);
       dispatch(setPlaceData(data));
+      dispatch(setLoadingPlace(false))
     } catch (error) {
       console.log(error);
     }

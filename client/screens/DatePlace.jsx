@@ -21,39 +21,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPlaceDataAsync } from "../stores/actions/placeAction";
 
 export default function DatePlace({navigation}) {
-  const data = useSelector(state => state.placeState.placeData)
+  const data = useSelector(state => state?.placeState?.placeData)
+  const loading = useSelector(state => state.placeState.loadingPlace)
   let dispatch = useDispatch()
   
   useEffect(() => {
     dispatch(fetchPlaceDataAsync())
   }, []);
 
-  return (
-    <View style={styles.container}>
-
-      <ScrollView style={styles.listContainer}>
-      {data?.map((place) => {
-        return (
-          <View>
-          <TouchableOpacity
-          key={place.id}
-          onPress={() => {
-            navigation.navigate('Place Detail', {url: place.url})
-          }}
-          >
-            <Image
-              style={styles.placeImage}
-              source={{ uri: place.photo }}
-            ></Image>
-          </TouchableOpacity>
-          <Text style={styles.placeName}>{place.name}</Text>
-          </View>
-        );
-      })}
-      </ScrollView>
-
-    </View>
-  )
+  if(loading) {
+    return <Text>Loading</Text>
+  } else {
+    return (
+      <View style={styles.container}>
+  
+        <ScrollView style={styles.listContainer}>
+        {data?.map((place) => {
+          return (
+            <View key={place.id}>
+            <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Place Detail', {url: place.url})
+            }}
+            >
+              <Image
+                style={styles.placeImage}
+                source={{ uri: place.photo }}
+              ></Image>
+            </TouchableOpacity>
+            <Text style={styles.placeName}>{place.name}</Text>
+            </View>
+          );
+        })}
+        </ScrollView>
+  
+      </View>
+    ) 
+  }
 }
 
 const styles = StyleSheet.create({

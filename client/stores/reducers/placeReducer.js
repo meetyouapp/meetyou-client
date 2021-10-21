@@ -1,9 +1,11 @@
 import {
- SET_PLACE_DATA
+ SET_PLACE_DATA,
+ SET_LOADING_PLACE
 } from "../actionType";
 
 const initialState = {
-  placeData: {},
+  placeData: [],
+  loadingPlace: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -11,6 +13,8 @@ export default function reducer(state = initialState, action) {
   switch (type) {
     case SET_PLACE_DATA:
       return { ...state, placeData: payload };
+      case SET_LOADING_PLACE:
+        return { ...state, loadingPlace: payload };
     default:
       return state;
   }
