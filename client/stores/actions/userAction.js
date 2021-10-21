@@ -86,7 +86,7 @@ export function registerUsers(user) {
 
 export function setUsersAsync() {
   return async function (dispatch) {
-    dispatch(setLoadingUsers(true));
+    // dispatch(setLoadingUsers(true));
 
     try {
       // let token = await AsyncStorage.getItem('access_token')

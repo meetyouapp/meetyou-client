@@ -11,17 +11,13 @@ const height = width * 150/100
 
 
 
-
 export default function Detail({route}) {
   const dispatch = useDispatch()
-
-  let dot = {
-    active: 0
-  }
 
   console.log(route.params.id);
   const {id} = route.params
 
+  const loading = useSelector(state => state.profileState.loadingProfile)
   const userDetail  = useSelector(state => state.profileState.detailData);
   console.log(userDetail);
 
@@ -29,6 +25,16 @@ export default function Detail({route}) {
     dispatch(fetchUserDetail(id))
   }, [])
 
+  if(loading) {
+    return (
+      <View style={styles.loading}>
+        <Image
+          source={require("../images/loading.gif")}
+          style={styles.image}
+        />
+      </View>
+    )
+  }
 
   return (
     // <SafeAreaView style={styles.container}>
@@ -58,22 +64,27 @@ export default function Detail({route}) {
             </View>
 
             <View style={styles.description}>
-              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', marginBottom: 8}}>
                 <Text style={styles.textName}>{userDetail.username}</Text>
                 <Text style={styles.textAge}>{userDetail.age}</Text>
               </View>
-              <Text style={styles.about}>About Me</Text>
-              <Text style={styles.textDescription}>{userDetail.about}</Text>
-              <Text style={styles.about}>Passions</Text>
-              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'space-between'}}>
-                {
-                  userDetail?.UserInterests?.map((interest, index) => (
-                    <Text 
-                      key={index}
-                      style={styles.interestBox}
-                    >{ interest?.Interest?.name }</Text>
-                  ))
-                }
+              <View style={{ backgroundColor: '#E4D3CF', borderRadius: 20, padding: 15}}>
+                <Text style={styles.about}>About Me</Text>
+                <Text style={styles.textDescription}>{userDetail.about}</Text>
+              </View>
+              <View style={{ backgroundColor: '#E4D3CF', borderRadius: 20, padding: 15, marginVertical: 10}}>
+              
+                <Text style={styles.about}>Passions</Text>
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'space-between'}}>
+                  {
+                    userDetail?.UserInterests?.map((interest, index) => (
+                      <Text 
+                        key={index}
+                        style={styles.interestBox}
+                      >{ interest?.Interest?.name }</Text>
+                    ))
+                  }
+                </View>
               </View>
             </View>
             
@@ -149,17 +160,17 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   about: {
-    paddingTop: 15,
+    // paddingTop: 15,
     fontWeight: 'bold',
     fontSize: 15
   },
   interestBox: {
     fontSize: 15,
-    backgroundColor: 'grey',
+    backgroundColor: '#AD9D9D',
     color: 'white',
     marginRight: 10,
     marginTop: 8,
     padding: 10,
-    borderRadius: 18
+    borderRadius: 15
   }
 });

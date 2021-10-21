@@ -75,7 +75,12 @@ export default function Profile({ navigation }) {
   
   if(loading) {
     return (
-      <Text>Loading</Text>
+      <View style={styles.loading}>
+        <Image
+          source={require("../images/loading.gif")}
+          style={styles.image}
+        />
+      </View>
     )
   }
   return (
