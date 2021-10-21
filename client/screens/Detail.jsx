@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, ScrollView, Button, Image, Linking, Dimensions } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { backgroundColor, border, borderBottom, borderRadius, fontWeight } from 'styled-system';
+import { backgroundColor, border, borderBottom, borderRadius, fontWeight, style } from 'styled-system';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetail } from "../stores/actions/profileAction"
 
@@ -9,8 +9,15 @@ import { fetchUserDetail } from "../stores/actions/profileAction"
 const {width} = Dimensions.get("window")
 const height = width * 150/100
 
+
+
+
 export default function Detail({route}) {
   const dispatch = useDispatch()
+
+  let dot = {
+    active: 0
+  }
 
   console.log(route.params.id);
   const {id} = route.params
@@ -21,6 +28,7 @@ export default function Detail({route}) {
   useEffect(() => {
     dispatch(fetchUserDetail(id))
   }, [])
+
 
   return (
     // <SafeAreaView style={styles.container}>
@@ -78,31 +86,45 @@ export default function Detail({route}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 10
+    flex: 1
+  },
+  pagination: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center'
+  },
+  pagingText: {
+    color: 'black',
+    margin: 3
+  },
+  pagingActiveText: {
+    color: '#C9CCD5',
+    margin: 3
   },
   imageScroll: {
+    backgroundColor: 'pink',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     
   },
   image: {
-    borderRadius: 30,
     width, 
     height: "100%", 
     resizeMode: 'cover'
   },
   description: {
-    marginTop: 10,
-    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
     backgroundColor: '#EEEEEE',
-    borderRadius: 30,
-    borderRightColor: 'black',
-    borderLeftColor: 'black',
+    // borderRadius: 30,
+    // borderRightColor: 'black',
+    // borderLeftColor: 'black',
     // borderTopWidth: 1,
-    borderRightWidth: 2,
-    borderLeftWidth: 2,
+    // borderRightWidth: 2,
+    // borderLeftWidth: 2,
   },
   textName: {
     fontSize: 30,

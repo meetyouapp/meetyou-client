@@ -17,7 +17,7 @@ export default function Explore({navigation}) {
   const dispatch = useDispatch()
 
   const cardsData = useSelector(state => state.usersState.users)
-  console.log("data USer", cardsData);
+  // console.log("data USer", cardsData);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   theEnd: {
     flex: 1, 
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   theEndText: {
     fontSize: 15,

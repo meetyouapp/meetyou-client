@@ -23,6 +23,7 @@ export function fetchPlaceDataAsync() {
         },
       });
       const data = response.data;
+      console.log("DATA LOKASI BROK", data);
       dispatch(setPlaceData(data));
     } catch (error) {
       console.log(error);
