@@ -106,6 +106,7 @@ export function setUsersAsync() {
       console.log(error, "atau km disini");
       dispatch(setErrorUsers(error));
     }
+    // dispatch(setLoadingUsers(false))
   };
 }
 
