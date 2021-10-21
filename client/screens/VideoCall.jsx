@@ -38,6 +38,7 @@ export default function VideoCall({ route }) {
                     allowsInlineMediaPlayback={true}
                     startInLoadingState={true}
                     allowUniversalAccessFromFileURLs={true}
+                    
                 />
             </View>
         </SafeAreaView>

@@ -65,15 +65,15 @@ export default function Login({ navigation }) {
       >
         <View style={styles.loginView}>
           <Image
-            source={require("../images/icon-white.png")}
+            source={{uri:'https://ik.imagekit.io/xvfgr2ixls8/Meetyou_Copy__2__qb8PI52zB.png?updatedAt=1634587281549'}}
             style={{
-              height: 120,
-              width: 120,
+              height: 220,
+              width: 220,
               // marginTop: 20,
             }}
           />
 
-          <Text style={styles.loginViewText}>Meet You</Text>
+          {/* <Text style={styles.loginViewText}>Meet You</Text> */}
         </View>
       </ImageBackground>
       <View style={styles.bottomView}>

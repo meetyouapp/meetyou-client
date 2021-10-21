@@ -54,16 +54,7 @@ export default function TabScreen({ navigation }) {
         tabBarInactiveTintColor: "gray",
         tabBarStyle: { height: 55 },
       })}
-    >
-      <Tab.Screen
-        name="Explore"
-        component={Explore}
-        options={{
-          headerShown: true,
-          headerTitleAlign: "center",
-          headerShadowVisible: false,
-        }}
-      />
+      >
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -83,6 +74,15 @@ export default function TabScreen({ navigation }) {
               </View>
             );
           },
+        }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={Explore}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
         }}
       />
       <Tab.Screen
