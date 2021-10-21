@@ -71,11 +71,11 @@ export default function Detail({route}) {
                 <Text style={styles.textName}>{userDetail.username}</Text>
                 <Text style={styles.textAge}>{userDetail.age}</Text>
               </View>
-              <View style={{ borderWidth: 2, borderColor: '#E4D3CF', borderRadius: 20, padding: 15}}>
+              <View style={{ paddingBottom: 10}}>
                 <Text style={styles.about}>About Me</Text>
                 <Text style={styles.textDescription}>{userDetail.about}</Text>
               </View>
-              <View style={{ borderWidth: 2,  borderColor: '#E4D3CF', borderRadius: 20, padding: 15, marginVertical: 10}}>
+              {/* <View style={{ backgroundColor: 'white', borderRadius: 20, padding: 15, marginVertical: 10}}> */}
               
                 <Text style={styles.about}>Passions</Text>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'space-between'}}>
@@ -88,7 +88,7 @@ export default function Detail({route}) {
                     ))
                   }
                 </View>
-              </View>
+              {/* </View> */}
             </View>
             
           </View>
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   interestBox: {
     fontSize: 15,
-    backgroundColor: '#AD9D9D',
+    backgroundColor: 'grey',
     color: 'white',
     marginRight: 10,
     marginTop: 8,
