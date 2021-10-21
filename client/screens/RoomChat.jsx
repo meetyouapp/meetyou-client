@@ -24,6 +24,7 @@ const RoomChat = ({ navigation, route }) => {
   const { profileData } = useSelector((state) => state.profileState);
   const payload = {name: roomVideo.toString()}
   const  videoCallUrl  = useSelector((state) => state?.videoCallState?.videoCallGet)
+  console.log(videoCallUrl, '<<<<<<<<<<')
   const loading = useSelector((state) => state?.videoCallState?.isLoading)
 
   useEffect(() => {
