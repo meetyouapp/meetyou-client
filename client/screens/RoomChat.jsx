@@ -23,7 +23,8 @@ const RoomChat = ({ navigation, route }) => {
   const [messages, setMessages] = useState([]);
   const { profileData } = useSelector((state) => state.profileState);
   const payload = {name: roomVideo.toString()}
-  const { videoCall } = useSelector((state) => state.videoCallState)
+  const  videoCallUrl  = useSelector((state) => state?.videoCallState?.videoCallGet)
+  const loading = useSelector((state) => state?.videoCallState?.isLoading)
 
   useEffect(() => {
     dispatch(fetchUserProfile());
@@ -62,7 +63,7 @@ const RoomChat = ({ navigation, route }) => {
         >
           <TouchableOpacity
             // onPress={() => navigation.navigate({name: 'Video Call', params: {roomVideo}})}
-            onPress={() => Linking.openURL(videoCall?.url)}
+            onPress={() => Linking.openURL(videoCallUrl)}
           >
             <FontAwesome name="video-camera" size={24} color="white" />
           </TouchableOpacity>
@@ -115,19 +116,22 @@ const RoomChat = ({ navigation, route }) => {
   }, []);
 
   
-
-  return (
-    <GiftedChat
-      messages={messages}
-      showAvatarForEveryMessage={true}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: profileData?.id,
-        name: profileData?.username,
-        avatar: profileData?.photo,
-      }}
-    />
-  );
+  if(loading) {
+    return <Text>Loading</Text>
+  } else {
+    return (
+      <GiftedChat
+        messages={messages}
+        showAvatarForEveryMessage={true}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: profileData?.id,
+          name: profileData?.username,
+          avatar: profileData?.photo,
+        }}
+      />
+    );
+  }
 };
 
 export default RoomChat;
