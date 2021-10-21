@@ -14,22 +14,28 @@ import {
   Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import GestureRecognizer from 'react-native-swipe-gestures';
+import GestureRecognizer from "react-native-swipe-gestures";
 import { componentsColor } from "../constants/Color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, editProfileAsync, addImageAsync } from "../stores/actions/profileAction";
+import {
+  fetchUserProfile,
+  editProfileAsync,
+  addImageAsync,
+} from "../stores/actions/profileAction";
+import { LoadingHandleText } from "../components/LoadingText";
+import { NativeBaseProvider, Center } from "native-base";
 
 export default function Profile({ navigation }) {
-  const data = useSelector(state => state.profileState.profileData)
-  const loading = useSelector(state => state.profileState.loadingProfile)
+  const data = useSelector((state) => state.profileState.profileData);
+  const loading = useSelector((state) => state.profileState.loadingProfile);
   // console.log('================', data, '==============')
-  let dispatch = useDispatch()
+  let dispatch = useDispatch();
 
   useEffect(() => {
     // getStorage();
-    dispatch(fetchUserProfile())
+    dispatch(fetchUserProfile());
   }, []);
 
   const getStorage = async () => {
@@ -46,50 +52,41 @@ export default function Profile({ navigation }) {
   const [popUpEditProfile, setpopUpEditProfile] = useState(false);
   const [text, setText] = useState("");
 
-  const [editUserame, setEditUsername] = useState(data?.username)
+  const [editUserame, setEditUsername] = useState(data?.username);
   const [editGender, setEditGender] = useState(data?.gender);
   const [editAge, setEditAge] = useState(data?.age?.toString());
   const [editPhoto, setEditPhoto] = useState(data?.photo);
   const [editAbout, setEditAbout] = useState(data?.about);
 
-  const [imgUrl, setImgUrl] = useState('')
+  const [imgUrl, setImgUrl] = useState("");
 
-  const editProfile = async() => {
+  const editProfile = async () => {
     const payload = {
       username: editUserame,
       gender: editGender,
       age: Number(editAge),
-      about: editAbout
-    }
-    await dispatch(editProfileAsync(payload))
-    await dispatch(fetchUserProfile())
-    setpopUpEditProfile(false)
-  }
+      about: editAbout,
+    };
+    await dispatch(editProfileAsync(payload));
+    await dispatch(fetchUserProfile());
+    setpopUpEditProfile(false);
+  };
 
   const addImage = async () => {
-    const payload = { imgUrl }
-    await dispatch(addImageAsync(payload))
-    await dispatch(fetchUserProfile())
-    setpopUpAddImage(false)
-  }
-  
-  if(loading) {
+    const payload = { imgUrl };
+    await dispatch(addImageAsync(payload));
+    await dispatch(fetchUserProfile());
+    setpopUpAddImage(false);
+  };
+
+  if (loading) {
     return (
-      <View style={{
-        flex: 1, 
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Image
-          source={require("../images/loading.gif")}
-          style={{
-            width: "50%", 
-            height: "30%",
-            margin: 10
-          }}
-        />
-      </View>
-    )
+      <NativeBaseProvider>
+        <Center flex={1} px="3" py="64">
+          <LoadingHandleText color={componentsColor} />
+        </Center>
+      </NativeBaseProvider>
+    );
   }
   return (
     <ScrollView>
@@ -133,118 +130,121 @@ export default function Profile({ navigation }) {
             </TouchableOpacity>
           </ScrollView>
           <View style={{ textAlign: "left", bottom: "14%" }}>
-            {data?.UserInterests?.map(({Interest}) => {
+            {data?.UserInterests?.map(({ Interest }) => {
               return (
                 <Text key={Interest.id} style={styles.interest}>
                   #{Interest.name}
                 </Text>
               );
             })}
-
           </View>
-            <GestureRecognizer onSwipeDown={ () => setpopUpAddImage(false) }>
-              <View>
-                <Modal
-                  style={styles.centeredView}
-                  animationType="slide"
-                  transparent={true}
-                  visible={popUpAddImage}
-                  onRequestClose={() => {
-                    setpopUpAddImage(false);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>Add New Photo</Text>
-                      <View style={{ padding: 10 }}>
-                        <TextInput
-                          style={styles.inputUrl}
-                          placeholder="Add Image Url"
-                          onChangeText={(text) => setImgUrl(text)}
-                          value={imgUrl}
-                        />
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 24,
-                            textAlign: "center",
-                          }}
-                        >
-                          {text}
-                        </Text>
-                      </View>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={addImage}
+          <GestureRecognizer onSwipeDown={() => setpopUpAddImage(false)}>
+            <View>
+              <Modal
+                style={styles.centeredView}
+                animationType="slide"
+                transparent={true}
+                visible={popUpAddImage}
+                onRequestClose={() => {
+                  setpopUpAddImage(false);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Add New Photo</Text>
+                    <View style={{ padding: 10 }}>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="Add Image Url"
+                        onChangeText={(text) => setImgUrl(text)}
+                        value={imgUrl}
+                      />
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 24,
+                          textAlign: "center",
+                        }}
                       >
-                        <Text style={styles.textStyle}>Save</Text>
-                      </Pressable>
+                        {text}
+                      </Text>
                     </View>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={addImage}
+                    >
+                      <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
                   </View>
-                </Modal>
-              </View>
-            </GestureRecognizer>
+                </View>
+              </Modal>
+            </View>
+          </GestureRecognizer>
 
-            <GestureRecognizer onSwipeDown={ () => setpopUpEditProfile(false) }>
-              <View>
-                <Modal
-                  style={styles.centeredView2}
-                  animationType="slide"
-                  transparent={true}
-                  visible={popUpEditProfile}
-                  onRequestClose={() => {
-                    setpopUpEditProfile(false);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>Edit Profile</Text>
-                      <View style={{ padding: 10 }}>
-                        <Text style={styles.inputTitle}>Username</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          placeholder="Name"
-                          value={editUserame}
-                          onChangeText={(text) => setEditUsername(text)}
-                        />
-                        <Text style={styles.inputTitle}>About me</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          placeholder="About"
-                          value={editAbout}
-                          onChangeText={(text) => setEditAbout(text)}
-                        />
-                        <Text style={styles.inputTitle}>Age</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          keyboardType="numeric"
-                          value={editAge}
-                          onChangeText={(text) => setEditAge(text)}
-                        />
-                        <Text style={styles.inputTitle}>Profile Picture</Text>
-                        <TextInput
-                          style={styles.inputUrl}
-                          value={editPhoto}
-                          onChangeText={(text) => setEditPhoto(text)}
-                        />
-                        <Text style={styles.inputTitle}>Gender</Text>
-                        <Picker selectedValue={editGender || 'male'} value={editGender} onValueChange={(value, index) => setEditGender(value)}>
-                          <Picker.Item label="male" value="male" />
-                          <Picker.Item label="female" value="female" />
-                        </Picker>
-                      </View>
-
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={editProfile}
+          <GestureRecognizer onSwipeDown={() => setpopUpEditProfile(false)}>
+            <View>
+              <Modal
+                style={styles.centeredView2}
+                animationType="slide"
+                transparent={true}
+                visible={popUpEditProfile}
+                onRequestClose={() => {
+                  setpopUpEditProfile(false);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Edit Profile</Text>
+                    <View style={{ padding: 10 }}>
+                      <Text style={styles.inputTitle}>Username</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="Name"
+                        value={editUserame}
+                        onChangeText={(text) => setEditUsername(text)}
+                      />
+                      <Text style={styles.inputTitle}>About me</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        placeholder="About"
+                        value={editAbout}
+                        onChangeText={(text) => setEditAbout(text)}
+                      />
+                      <Text style={styles.inputTitle}>Age</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        keyboardType="numeric"
+                        value={editAge}
+                        onChangeText={(text) => setEditAge(text)}
+                      />
+                      <Text style={styles.inputTitle}>Profile Picture</Text>
+                      <TextInput
+                        style={styles.inputUrl}
+                        value={editPhoto}
+                        onChangeText={(text) => setEditPhoto(text)}
+                      />
+                      <Text style={styles.inputTitle}>Gender</Text>
+                      <Picker
+                        selectedValue={editGender || "male"}
+                        value={editGender}
+                        onValueChange={(value, index) => setEditGender(value)}
                       >
-                        <Text style={styles.textStyle}>Save</Text>
-                      </Pressable>
+                        <Picker.Item label="male" value="male" />
+                        <Picker.Item label="female" value="female" />
+                      </Picker>
                     </View>
+
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={editProfile}
+                    >
+                      <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
                   </View>
-                </Modal>
-              </View>
-            </GestureRecognizer>
+                </View>
+              </Modal>
+            </View>
+          </GestureRecognizer>
         </View>
       </View>
       <Pressable
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: componentsColor,
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   inputUrl: {
     borderColor: componentsColor,
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     color: "grey",
     fontWeight: "bold",
     paddingRight: 240,
-    top: '24%'
+    top: "24%",
   },
   horizontalScroll: {
     bottom: "10%",
