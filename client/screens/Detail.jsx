@@ -10,7 +10,6 @@ const {width} = Dimensions.get("window")
 const height = width * 150/100
 
 
-
 export default function Detail({route}) {
   const dispatch = useDispatch()
 
@@ -30,7 +29,11 @@ export default function Detail({route}) {
       <View style={styles.loading}>
         <Image
           source={require("../images/loading.gif")}
-          style={styles.image}
+          style={{
+            width: "50%", 
+            height: "30%",
+            margin: 10
+          }}
         />
       </View>
     )
@@ -68,11 +71,11 @@ export default function Detail({route}) {
                 <Text style={styles.textName}>{userDetail.username}</Text>
                 <Text style={styles.textAge}>{userDetail.age}</Text>
               </View>
-              <View style={{ backgroundColor: '#E4D3CF', borderRadius: 20, padding: 15}}>
+              <View style={{ borderWidth: 2, borderColor: '#E4D3CF', borderRadius: 20, padding: 15}}>
                 <Text style={styles.about}>About Me</Text>
                 <Text style={styles.textDescription}>{userDetail.about}</Text>
               </View>
-              <View style={{ backgroundColor: '#E4D3CF', borderRadius: 20, padding: 15, marginVertical: 10}}>
+              <View style={{ borderWidth: 2,  borderColor: '#E4D3CF', borderRadius: 20, padding: 15, marginVertical: 10}}>
               
                 <Text style={styles.about}>Passions</Text>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'space-between'}}>
