@@ -67,7 +67,7 @@ export default function Detail({route}) {
             </View>
 
             <View style={styles.description}>
-              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', marginBottom: 8}}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', marginBottom: 10}}>
                 <Text style={styles.textName}>{userDetail.username}</Text>
                 <Text style={styles.textAge}>{userDetail.age}</Text>
               </View>
